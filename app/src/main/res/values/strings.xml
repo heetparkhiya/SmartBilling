@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SmartBilling</string>
+    <array name="ModeOfPayment">
+        <item>Cheque</item>
+        <item>Cash</item>
+        <item>NetBanking</item>
+        <item>Other</item>
+    </array>
+</resources>
+

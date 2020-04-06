@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    tools:context=".Design.DetailsCompanyActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout style="@style/ScrollViewLinearLayout">
+
+            <androidx.cardview.widget.CardView style="@style/DetailsScreenCardViewDesign">
+
+                <LinearLayout style="@style/DetailsScreenLinearLayoutDesign">
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingTextViewDesign"
+                        android:text="Contact Number" />
+
+                    <TextView
+                        android:id="@+id/tvCompanyContactNo"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="Address" />
+
+                    <TextView
+                        android:id="@+id/tvCompanyAddress"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="Email" />
+
+                    <TextView
+                        android:id="@+id/tvCompanyEmail"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="VAT TIN No." />
+
+                    <TextView
+                        android:id="@+id/tvCompanyVatTinNo"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="CST TIN No." />
+
+                    <TextView
+                        android:id="@+id/tvCompanyCstTinNo"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="Fax Number" />
+
+                    <TextView
+                        android:id="@+id/tvCompanyFaxNo"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

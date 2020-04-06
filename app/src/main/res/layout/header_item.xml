@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        style="@style/TableTextViewDesign"
+        android:text="Design" />
+
+    <TextView
+        style="@style/TableTextViewDesign"
+        android:text="Size" />
+
+    <TextView
+        style="@style/TableTextViewDesign"
+        android:text="Rate" />
+
+    <TextView
+        style="@style/TableTextViewDesign"
+        android:text="Qty." />
+
+    <TextView
+        style="@style/TableTextViewDesign"
+        android:text="Amt." />
+</LinearLayout>
