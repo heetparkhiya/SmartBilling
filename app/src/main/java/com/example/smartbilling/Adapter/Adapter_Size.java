@@ -19,7 +19,6 @@ import com.example.smartbilling.Bean.Bean_Response_Size;
 import com.example.smartbilling.Bean.Bean_Size;
 import com.example.smartbilling.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;

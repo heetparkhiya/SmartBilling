@@ -8,9 +8,7 @@
     android:orientation="vertical"
     tools:context=".Design.AddCollectionActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ScrollView style="@style/ScrollViewLinearLayout">
 
         <LinearLayout style="@style/ScrollViewLinearLayout">
 
@@ -18,24 +16,31 @@
 
                 <LinearLayout style="@style/AddDetailsCardLinearLayout">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:text="Select Party Name"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/colorPrimary" />
+                        android:background="@drawable/design_spinner"
+                        android:orientation="horizontal">
 
-                    <Spinner
-                        android:id="@+id/spCollectionPartyName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimary"
+                            android:gravity="center_horizontal"
+                            android:padding="5dp"
+                            android:text="Party Name"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/colorWhite" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_margin="3dp"
-                        android:background="@color/colorPrimary" />
+                        <Spinner
+                            android:id="@+id/spCollectionPartyName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -43,12 +48,16 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:hint="Enter Bill No.">
+                            android:hint="Bill No."
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etCollectionBillNo"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -56,12 +65,16 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:hint="Select Bill Date">
+                            android:hint="Bill Date"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etCollectionBillDate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -70,11 +83,15 @@
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Days">
+                        android:layout_marginTop="10dp"
+                        android:hint="Days"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionDays"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -82,23 +99,31 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Bank Name">
+                        android:layout_marginTop="10dp"
+                        android:hint="Bank Name"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionBankName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:editable="false"/>
+                            android:editable="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Bank Branch">
+                        android:layout_marginTop="10dp"
+                        android:hint="Bank Branch"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionBankBranch"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -117,10 +142,13 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Collection No.">
+                            android:hint="Collection No."
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
                             <EditText
                                 android:id="@+id/etCollectionNo"
@@ -130,12 +158,15 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Select Collection Date">
+                            android:hint="Collection Date"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etCollectionDate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -143,32 +174,43 @@
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:text="Select Mode of Payment"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/colorPrimary" />
+                        android:background="@drawable/design_spinner"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
 
-                    <Spinner
-                        android:id="@+id/spCollectionMOP"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:entries="@array/ModeOfPayment" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimary"
+                            android:gravity="center_horizontal"
+                            android:padding="5dp"
+                            android:text="Mode of Payment"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/colorWhite" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_margin="3dp"
-                        android:background="@color/colorPrimary" />
+                        <Spinner
+                            android:id="@+id/spCollectionMOP"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4"
+                            android:entries="@array/ModeOfPayment" />
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Cheque No.">
+                        android:layout_marginTop="10dp"
+                        android:hint="Cheque No."
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionChequeNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -176,11 +218,15 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Select Cheque Date">
+                        android:layout_marginTop="10dp"
+                        android:hint="Cheque Date"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionChequeDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -194,11 +240,15 @@
                 <LinearLayout style="@style/AddDetailsCardLinearLayout">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Bill Amount">
+                        android:layout_marginTop="10dp"
+                        android:hint="Bill Amount"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionBillAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -206,11 +256,15 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Credit Note">
+                        android:layout_marginTop="10dp"
+                        android:hint="Credit Note"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionCreditNote"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -223,12 +277,16 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:hint="Enter Discount %">
+                            android:hint="Discount %"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etCollectionDiscountPR"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -236,12 +294,16 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:hint="Enter Discount">
+                            android:hint="Discount"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etCollectionDiscount"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -250,11 +312,15 @@
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Received Amount">
+                        android:layout_marginTop="10dp"
+                        android:hint="Received Amount"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionReceivedAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -262,11 +328,15 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Collection Amount">
+                        android:layout_marginTop="10dp"
+                        android:hint="Collection Amount"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionAmount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -278,12 +348,17 @@
             <androidx.cardview.widget.CardView style="@style/AddDetailsCard">
 
                 <LinearLayout style="@style/AddDetailsCardLinearLayout">
+
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Select Clearance Date">
+                        android:layout_marginTop="10dp"
+                        android:hint="Clearance Date"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCollectionClearanceDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

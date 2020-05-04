@@ -39,15 +39,11 @@ public class PartyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party);
-
         getSupportActionBar().setTitle("Party");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         init();
         getAllParty();
-
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -68,10 +64,7 @@ public class PartyActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvPartyList.setLayoutManager(layoutManager);
-
+        rvPartyList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_Party> call = apiInterface.getAllParty();
         call.enqueue(new Callback<Bean_Response_Party>() {
@@ -81,9 +74,8 @@ public class PartyActivity extends AppCompatActivity {
                     List<Bean_Party> PartyList = response.body().getData();
                     rvPartyList.setAdapter(new Adapter_Party(PartyList, activity));
                     progress.dismiss();
-                } else {
+                } else
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -96,7 +88,6 @@ public class PartyActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

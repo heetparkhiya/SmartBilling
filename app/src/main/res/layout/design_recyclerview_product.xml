@@ -4,34 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp">
+    <androidx.cardview.widget.CardView style="@style/RecyclerViewListCardViewDesign">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+        <LinearLayout style="@style/RecyclerViewListCardViewLinearLayoutDesign">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <LinearLayout style="@style/RecyclerViewListCardViewSubLinearLayoutDesign">
 
                 <TextView
                     android:id="@+id/tvProductName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="5"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold" />
+                    style="@style/RecyclerViewListTextViewDesign" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -42,80 +23,53 @@
 
                     <ImageView
                         android:id="@+id/imgEdit"
-                        android:src="@drawable/ic_edit"
-                        style="@style/EditDeleteImageViewDesign"/>
+                        style="@style/EditDeleteImageViewDesign"
+                        android:src="@drawable/ic_edit" />
 
                     <ImageView
                         android:id="@+id/imgDelete"
-                        android:src="@drawable/ic_delete"
-                        style="@style/EditDeleteImageViewDesign"/>
+                        style="@style/EditDeleteImageViewDesign"
+                        android:src="@drawable/ic_delete" />
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <LinearLayout style="@style/RecyclerViewListCardViewSubLinearLayoutDesign">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Design Number: "
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorPrimary" />
+                    style="@style/RecyclerViewListDetailsTextViewDesign"
+                    android:text="Design Number: " />
 
                 <TextView
                     android:id="@+id/tvDesignNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    style="@style/RecyclerViewListSubDetailsTextViewDesign" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <LinearLayout style="@style/RecyclerViewListCardViewSubLinearLayoutDesign">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Product Style: "
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorPrimary" />
+                    style="@style/RecyclerViewListDetailsTextViewDesign"
+                    android:text="Product Style: " />
 
                 <TextView
                     android:id="@+id/tvProductStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    style="@style/RecyclerViewListSubDetailsTextViewDesign" />
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <LinearLayout style="@style/RecyclerViewListCardViewSubLinearLayoutDesign">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MRP (%): "
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorPrimary" />
+                    style="@style/RecyclerViewListDetailsTextViewDesign"
+                    android:text="MRP (%): " />
 
                 <TextView
                     android:id="@+id/tvProductMRP"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:inputType="number"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    style="@style/RecyclerViewListSubDetailsTextViewDesign" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tvTransportID"
-                style="@style/VisibilityTextViewDesign"/>
+                style="@style/VisibilityTextViewDesign" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

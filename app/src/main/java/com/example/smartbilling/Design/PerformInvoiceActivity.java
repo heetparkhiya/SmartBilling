@@ -42,12 +42,9 @@ public class PerformInvoiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perform_invoice);
         getSupportActionBar().setTitle("Perform Invoice List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         init();
         getAllList();
-
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -68,10 +65,7 @@ public class PerformInvoiceActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvPerformInvoiceList.setLayoutManager(layoutManager);
-
+        rvPerformInvoiceList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_ListEntry> call = apiInterface.getAllListEntry("Invoice");
         call.enqueue(new Callback<Bean_Response_ListEntry>() {
@@ -81,9 +75,8 @@ public class PerformInvoiceActivity extends AppCompatActivity {
                     List<Bean_ListEntry> ListEntry = response.body().getData();
                     rvPerformInvoiceList.setAdapter(new Adapter_Perform_Invoice(ListEntry, activity));
                     progress.dismiss();
-                } else {
+                } else
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -96,7 +89,6 @@ public class PerformInvoiceActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

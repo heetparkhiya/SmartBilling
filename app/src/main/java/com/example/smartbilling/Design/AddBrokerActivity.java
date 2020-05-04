@@ -22,20 +22,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddBrokerActivity extends AppCompatActivity {
-
     final Activity activity = this;
     EditText etBrokerName, etBrokerAddress, etBrokerTelephoneNo, etBrokerFaxNo, etBrokerMobileNumber, etBrokerEmail, etBrokerRate;
     ApiInterface apiInterface;
-    String BrokerID ="", BrokerName = "", BrokerAddress ="", BrokerTelephoneNumber="", BrokerFaxNo="", BrokerMobileNumber="", BrokerEmail="", BrokerRate="";
+    String BrokerID, BrokerName, BrokerAddress, BrokerTelephoneNumber, BrokerFaxNo, BrokerMobileNumber, BrokerEmail, BrokerRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_broker);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         init();
-
         BrokerID = getIntent().getStringExtra("BrokerID");
         BrokerName = getIntent().getStringExtra("BrokerName");
         BrokerAddress = getIntent().getStringExtra("BrokerAddress");
@@ -130,7 +127,6 @@ public class AddBrokerActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
         String Name = etBrokerName.getText().toString();
         String Address = etBrokerName.getText().toString();
         String TelephoneNumber = etBrokerTelephoneNo.getText().toString();

@@ -51,7 +51,6 @@ public class AddCollectionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         FillSpinnerParty();
-
         CollectionID = getIntent().getStringExtra("CollectionID");
         SP_PartyID = getIntent().getStringExtra("PartyID");
         PartyName = getIntent().getStringExtra("PartyName");
@@ -84,9 +83,13 @@ public class AddCollectionActivity extends AppCompatActivity {
             etCollectionBankName.setText(BankName);
             etCollectionBankBranch.setText(BankBranch);
             etCollectionNo.setText(CollectionNo);
+
             // Here mode of payment and collection date are pending
+
             etCollectionChequeNo.setText(ChequeNo);
+
             // Here mode of Cheque Date is pending
+
             etCollectionBillAmount.setText(BillAmount);
             etCollectionCreditNote.setText(CreditNote);
             etCollectionDiscountPR.setText(DiscountPR);
@@ -168,7 +171,6 @@ public class AddCollectionActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_Party> call = apiInterface.getAllParty();
         call.enqueue(new Callback<Bean_Response_Party>() {
@@ -311,7 +313,7 @@ public class AddCollectionActivity extends AppCompatActivity {
         String CollectionAmount = etCollectionAmount.getText().toString().trim();
         String ClearanceDate = etCollectionClearanceDate.getText().toString().trim();
 
-        String CreditNote = "1"; //Check and Verify and How to use it from the database
+        String CreditNote = "1"; //Check and Verify and How to use it from the database PENDING
         String UserID = "1";
         String BrokerID = "1"; //Check it need or not PENDING
         String Remarks = "NULL";

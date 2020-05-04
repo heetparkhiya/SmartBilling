@@ -45,7 +45,6 @@ public class CreditNoteActivity extends AppCompatActivity {
         init();
         getAllCreditNote();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -66,10 +65,7 @@ public class CreditNoteActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvCreditNoteList.setLayoutManager(layoutManager);
-
+        rvCreditNoteList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_CreditNote> call = apiInterface.getAllCreditNote();
         call.enqueue(new Callback<Bean_Response_CreditNote>() {
@@ -120,4 +116,3 @@ public class CreditNoteActivity extends AppCompatActivity {
         rvCreditNoteList = (RecyclerView) findViewById (R.id.rvCreditNoteList);
     }
 }
-

@@ -45,7 +45,6 @@ public class CollectionActivity extends AppCompatActivity {
         init();
         getAllCollection();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -66,10 +65,7 @@ public class CollectionActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvCollectionList.setLayoutManager(layoutManager);
-
+        rvCollectionList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_Collection> call = apiInterface.getAllCollection();
         call.enqueue(new Callback<Bean_Response_Collection>() {
@@ -94,7 +90,6 @@ public class CollectionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

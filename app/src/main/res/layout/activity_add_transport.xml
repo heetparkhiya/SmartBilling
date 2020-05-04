@@ -8,9 +8,7 @@
     android:orientation="vertical"
     tools:context=".Design.AddTransportActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ScrollView style="@style/ScrollViewLinearLayout">
 
         <LinearLayout style="@style/ScrollViewLinearLayout">
 
@@ -21,9 +19,12 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Name">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:hint="Name">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTransportName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -33,9 +34,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Address">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="Address">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTransportAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -45,9 +50,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Mobile Number">
+                        android:hint="Mobile Number"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTransportMobileNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

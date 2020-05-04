@@ -8,6 +8,7 @@ import com.example.smartbilling.Bean.Bean_Response_General;
 import com.example.smartbilling.Bean.Bean_Response_ListEntry;
 import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.Bean.Bean_Response_Product;
+import com.example.smartbilling.Bean.Bean_Response_Product_Item_Size;
 import com.example.smartbilling.Bean.Bean_Response_Product_Multi;
 import com.example.smartbilling.Bean.Bean_Response_Size;
 import com.example.smartbilling.Bean.Bean_Response_Transport;
@@ -361,4 +362,7 @@ public interface ApiInterface {
             @Field("CollectionAmount") String CollectionAmount,
             @Field("ClearenceDate") String ClearanceDate,
             @Field("Remarks") String Remarks);
+
+    @GET("Product/SelectSizeByProductID.php")
+    Call<Bean_Response_Product_Item_Size> SelectSizeByProductID(@Query("ProductID") String ProductID);
 }

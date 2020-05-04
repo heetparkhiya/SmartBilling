@@ -41,12 +41,9 @@ public class OrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order);
         getSupportActionBar().setTitle("Order");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         init();
         getAllList();
-
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -67,10 +64,7 @@ public class OrderActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvOrderList.setLayoutManager(layoutManager);
-
+        rvOrderList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_ListEntry> call = apiInterface.getAllListEntry("Order");
         call.enqueue(new Callback<Bean_Response_ListEntry>() {
@@ -80,9 +74,8 @@ public class OrderActivity extends AppCompatActivity {
                     List<Bean_ListEntry> ListEntry = response.body().getData();
                     rvOrderList.setAdapter(new Adapter_Order(ListEntry, activity));
                     progress.dismiss();
-                } else {
+                } else
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -95,7 +88,6 @@ public class OrderActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

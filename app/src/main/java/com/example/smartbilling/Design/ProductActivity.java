@@ -41,10 +41,8 @@ public class ProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
-
         getSupportActionBar().setTitle("Product");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         init();
         getAllProduct();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
@@ -60,8 +58,6 @@ public class ProductActivity extends AppCompatActivity {
                 }, 2000);
             }
         });
-
-
     }
 
     private void getAllProduct() {
@@ -70,10 +66,7 @@ public class ProductActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvProductList.setLayoutManager(layoutManager);
-
+        rvProductList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_Product> call = apiInterface.getAllProduct();
         call.enqueue(new Callback<Bean_Response_Product>() {
@@ -83,9 +76,8 @@ public class ProductActivity extends AppCompatActivity {
                     List<Bean_Product> ProductList = response.body().getData();
                     rvProductList.setAdapter(new Adapter_Product(ProductList, activity));
                     progress.dismiss();
-                } else {
+                } else
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -99,7 +91,6 @@ public class ProductActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

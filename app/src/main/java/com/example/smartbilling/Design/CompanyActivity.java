@@ -64,10 +64,7 @@ public class CompanyActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvCompanyList.setLayoutManager(layoutManager);
-
+        rvCompanyList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_Company> call = apiInterface.getAllCompany();
         call.enqueue(new Callback<Bean_Response_Company>() {
@@ -91,7 +88,6 @@ public class CompanyActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

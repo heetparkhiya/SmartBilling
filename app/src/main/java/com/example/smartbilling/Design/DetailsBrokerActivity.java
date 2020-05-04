@@ -20,9 +20,7 @@ public class DetailsBrokerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_broker);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         init();
-
         final String BrokerID = getIntent().getStringExtra("BrokerID");
         final String BrokerName = getIntent().getStringExtra("BrokerName");
         final String BrokerAddress = getIntent().getStringExtra("BrokerAddress");
@@ -31,23 +29,22 @@ public class DetailsBrokerActivity extends AppCompatActivity {
         final String BrokerMobileNumber = getIntent().getStringExtra("BrokerMobileNumber");
         final String BrokerEmail = getIntent().getStringExtra("BrokerEmail");
         final String BrokerRate = getIntent().getStringExtra("BrokerRate");
-
         getSupportActionBar().setTitle(BrokerName);
-        getSupportActionBar().setSubtitle("Rate: "+BrokerRate);
+        getSupportActionBar().setSubtitle("Rate: " + BrokerRate);
 
-        if(BrokerAddress != null)
+        if (BrokerAddress != null)
             tvBrokerAddress.setText(BrokerAddress);
 
-        if(BrokerTelephoneNumber != null)
+        if (BrokerTelephoneNumber != null)
             tvBrokerTelephoneNo.setText(BrokerTelephoneNumber);
 
-        if(BrokerFaxNo != null)
+        if (BrokerFaxNo != null)
             tvBrokerFaxNo.setText(BrokerFaxNo);
 
-        if(BrokerMobileNumber != null)
+        if (BrokerMobileNumber != null)
             tvBrokerMobileNo.setText(BrokerMobileNumber);
 
-        if(BrokerEmail != null)
+        if (BrokerEmail != null)
             tvBrokerEmail.setText(BrokerEmail);
 
         tvBrokerMobileNo.setOnClickListener(new View.OnClickListener() {
@@ -67,18 +64,17 @@ public class DetailsBrokerActivity extends AppCompatActivity {
         });
     }
 
-    void init(){
-        tvBrokerMobileNo = (TextView) findViewById (R.id.tvBrokerMobileNo);
-        tvBrokerMobileNo = (TextView) findViewById (R.id.tvBrokerMobileNo);
-        tvBrokerAddress = (TextView) findViewById (R.id.tvBrokerAddress);
-        tvBrokerTelephoneNo = (TextView) findViewById (R.id.tvBrokerTelephoneNo);
-        tvBrokerFaxNo = (TextView) findViewById (R.id.tvBrokerFaxNo);
-        tvBrokerEmail = (TextView) findViewById (R.id.tvBrokerEmail);
+    void init() {
+        tvBrokerMobileNo = (TextView) findViewById(R.id.tvBrokerMobileNo);
+        tvBrokerMobileNo = (TextView) findViewById(R.id.tvBrokerMobileNo);
+        tvBrokerAddress = (TextView) findViewById(R.id.tvBrokerAddress);
+        tvBrokerTelephoneNo = (TextView) findViewById(R.id.tvBrokerTelephoneNo);
+        tvBrokerFaxNo = (TextView) findViewById(R.id.tvBrokerFaxNo);
+        tvBrokerEmail = (TextView) findViewById(R.id.tvBrokerEmail);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

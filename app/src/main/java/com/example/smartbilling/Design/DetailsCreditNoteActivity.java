@@ -2,7 +2,6 @@ package com.example.smartbilling.Design;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import com.example.smartbilling.R;
 
 public class DetailsCreditNoteActivity extends AppCompatActivity {
 
-    final Activity activity = this;
     TextView tvCreditNoteNo, tvCreditDate, tvCreditNoteNoOfCases, tvCreditNoteInvoiceNo, tvCreditNoteInvoiceDate, tvCreditNoteTotalQuantity, tvCreditNoteAmount, tvCreditNoteDiscountPR, tvCreditNoteDiscount, tvCreditNoteTotal, tvCreditNoteTaxPR, tvCreditNoteTax, tvCreditNoteOtherCharges, tvCreditNoteGrandTotal, tvCreditNoteCForm, tvPartyName, tvPartyMobileNo, tvPartyTelephoneNo, tvPartyEmail, tvPartyAddress, tvPartyLocation, tvPartyReference, tvPartyCST, tvPartyTIN, tvPartyBankThrough, tvPartyCreditDays, tvPartyDISC, tvPartyFaxNo;
 
     @Override
@@ -193,7 +191,6 @@ public class DetailsCreditNoteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

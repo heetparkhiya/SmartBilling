@@ -8,9 +8,7 @@
     android:orientation="vertical"
     tools:context=".Design.DetailsOrderActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ScrollView style="@style/ScrollViewLinearLayout">
 
         <LinearLayout style="@style/ScrollViewLinearLayout">
 

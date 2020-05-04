@@ -8,9 +8,7 @@
     android:orientation="vertical"
     tools:context=".Design.AddPartyActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ScrollView style="@style/ScrollViewLinearLayout">
 
         <LinearLayout style="@style/ScrollViewLinearLayout">
 
@@ -21,9 +19,12 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Name">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:hint="Name">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -33,9 +34,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Reference Name">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="Reference Name">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyRefName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -45,9 +50,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Address">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="Address">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -57,9 +66,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Bank Through">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="Bank Through">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyBankThrough"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -69,9 +82,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Pin">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="Pin No.">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyPin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -88,9 +105,13 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Enter City">
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            android:layout_marginTop="10dp"
+                            android:hint="City">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPartyCity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -101,9 +122,13 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Enter State">
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            android:layout_marginTop="10dp"
+                            android:hint="State">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPartyState"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -120,9 +145,13 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Enter Telephone No.">
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            android:layout_marginTop="10dp"
+                            android:hint="Telephone Number">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPartyTelephoneNo"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -133,9 +162,13 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Enter Mobile No.">
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            android:layout_marginTop="10dp"
+                            android:hint="Mobile Number">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPartyMobileNumber"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -147,9 +180,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Fax Number">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="Fax Number">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyFaxNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -159,9 +196,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Email">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="Email Address">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -171,9 +212,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter Location">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="Location">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -183,9 +228,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter TIN No.">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="TIN Number">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyTinNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -195,9 +244,13 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Enter CST No.">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
+                        android:hint="CST Number">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyCSTNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -213,9 +266,13 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Credit Days">
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            android:layout_marginTop="10dp"
+                            android:hint="Credit Days">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPartyCreditDays"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -226,9 +283,13 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:hint="Enter DISC">
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary"
+                            android:layout_marginTop="10dp"
+                            android:hint="DISC">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPartyDISC"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -237,51 +298,68 @@
 
                     </LinearLayout>
 
-
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:text="Select Transport"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/colorPrimary" />
+                        android:background="@drawable/design_spinner"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
 
-                    <Spinner
-                        android:id="@+id/spPartyTransport"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimary"
+                            android:gravity="center_horizontal"
+                            android:padding="5dp"
+                            android:text="Transport Name"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/colorWhite" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_margin="3dp"
-                        android:background="@color/colorPrimary" />
+                        <Spinner
+                            android:id="@+id/spPartyTransport"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4" />
+                    </LinearLayout>
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:text="Select Broker"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/colorPrimary" />
+                        android:background="@drawable/design_spinner"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
 
-                    <Spinner
-                        android:id="@+id/spPartyBroker"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimary"
+                            android:gravity="center_horizontal"
+                            android:padding="5dp"
+                            android:text="Broker Name"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/colorWhite" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_margin="3dp"
-                        android:background="@color/colorPrimary" />
+                        <Spinner
+                            android:id="@+id/spPartyBroker"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4" />
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        android:layout_marginTop="10dp"
                         android:hint="Broker Rage">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPartyBrokerRage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

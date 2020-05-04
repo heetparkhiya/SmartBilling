@@ -8,9 +8,7 @@
     android:orientation="vertical"
     tools:context=".Design.AddPerformInvoiceActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ScrollView style="@style/ScrollViewLinearLayout">
 
         <LinearLayout style="@style/ScrollViewLinearLayout">
 
@@ -18,59 +16,80 @@
 
                 <LinearLayout style="@style/AddDetailsCardLinearLayout">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:text="Select Party Name"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/colorPrimary" />
+                        android:background="@drawable/design_spinner"
+                        android:orientation="horizontal">
 
-                    <Spinner
-                        android:id="@+id/spPerInvPartyName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimary"
+                            android:gravity="center_horizontal"
+                            android:padding="5dp"
+                            android:text="Party Name"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="@color/colorWhite" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_margin="3dp"
-                        android:background="@color/colorPrimary" />
+                        <Spinner
+                            android:id="@+id/spPerInvPartyName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4" />
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Party Address">
+                        android:layout_marginTop="10dp"
+                        android:hint="Party Address"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPerInvPartyAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:editable="false" />
+                            android:editable="false"
+                            android:focusedByDefault="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Party CST No.">
+                        android:layout_marginTop="10dp"
+                        android:hint="Party CST No."
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPerInvPartyCSTNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:editable="false" />
+                            android:editable="false"
+                            android:focusedByDefault="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Party Transport">
+                        android:layout_marginTop="10dp"
+                        android:hint="Party Transport"
+                        android:textColorHint="@color/colorPrimary"
+                        app:boxStrokeColor="@color/colorPrimary">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPerInvPartyTransport"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:editable="false" />
+                            android:editable="false"
+                            android:focusedByDefault="true" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -85,12 +104,15 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Invoice No.">
+                            android:hint="Invoice No."
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPerInvNo"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -98,12 +120,15 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Perform Invoice Date">
+                            android:hint="Perform Invoice Date"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPerInvDate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -118,12 +143,16 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:hint="No. of Cases">
+                            android:hint="No. of Cases"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPerInvNoOfCases"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -131,12 +160,16 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
-                            android:hint="Total Quantity">
+                            android:hint="Total Quantity"
+                            android:textColorHint="@color/colorPrimary"
+                            app:boxStrokeColor="@color/colorPrimary">
 
-                            <EditText
+                            <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etPerInvQuantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

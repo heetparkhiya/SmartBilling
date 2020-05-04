@@ -11,14 +11,11 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/SwipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        style="@style/SwipeRefreshLayoutDesign">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPartyList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"/>
+            style="@style/RecyclerViewListDesign"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -25,7 +25,6 @@ public class Adapter_ProductWise_Size extends RecyclerView.Adapter<Adapter_Produ
     private OnItemCheckListener onItemCheckListener;
     private boolean isEditMode = false;
 
-
     public Adapter_ProductWise_Size(Context context, List<Bean_Size> SizeList, @NonNull OnItemCheckListener onItemCheckListener, boolean isEditMode) {
         this.context = context;
         this.SizeList = SizeList;

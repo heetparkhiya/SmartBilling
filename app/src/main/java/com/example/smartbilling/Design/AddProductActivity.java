@@ -52,6 +52,7 @@ public class AddProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         ProductID = getIntent().getStringExtra("ProductID");
         ProductName = getIntent().getStringExtra("ProductName");
@@ -65,8 +66,7 @@ public class AddProductActivity extends AppCompatActivity {
             etProductStyle.setText(ProductStyle);
             etProductDesignNo.setText(ProductDesignNumber);
             etProductMRP_PR.setText(ProductMRP_PR);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            rvProductWiseSize.setLayoutManager(layoutManager);
+            rvProductWiseSize.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             adapter = new Adapter_ProductWise_Size(activity, SizeList, new Adapter_ProductWise_Size.OnItemCheckListener() {
                 @Override
                 public void onItemCheck(Bean_Size item, Adapter_ProductWise_Size.ProductWiseSizeViewHolder holder) {
@@ -104,8 +104,6 @@ public class AddProductActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Add Product");
             getAllSize();
         }
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void init() {
@@ -332,21 +330,6 @@ public class AddProductActivity extends AppCompatActivity {
         if (SizeList.size() == 0) {
             flag = true;
         }
-        /*for (int i = 0; i < SizeList.size(); i++) {
-            View view = rvProductWiseSize.getChildAt(i);
-            if (((CheckBox) view.findViewById(R.id.chkSize)).isChecked()) {
-                EditText etProductRate = view.findViewById(R.id.etProductRate);
-                EditText etProductMRP = view.findViewById(R.id.etProductMRP);
-                if (Integer.parseInt(SizeList.get(i).getProductMRP()) < 0) {
-                    flag = true;
-                    etProductRate.setError("Enter the Product MRP");
-                }
-                if (Integer.parseInt(SizeList.get(i).getProductRate()) < 0) {
-                    flag = true;
-                    etProductMRP.setError("Enter the Product Rate");
-                }
-            }
-        }*/
         if (!flag) {
             SaveData();
         }

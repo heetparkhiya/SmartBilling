@@ -95,7 +95,6 @@ public class AddCreditNoteActivity extends AppCompatActivity {
                 cbCForm.setChecked(false);
         }
 
-
         CurrentDate = Calendar.getInstance();
         day = CurrentDate.get(Calendar.DAY_OF_MONTH);
         month = CurrentDate.get(Calendar.MONTH);
@@ -324,7 +323,6 @@ public class AddCreditNoteActivity extends AppCompatActivity {
                         progress.dismiss();
                     }
                 }
-
                 @Override
                 public void onFailure(Call<Bean_Response_CreditNote> call, Throwable t) {
                     Toast.makeText(activity, "Internet connection problem", Toast.LENGTH_SHORT).show();
@@ -332,8 +330,7 @@ public class AddCreditNoteActivity extends AppCompatActivity {
                 }
             });
         }
-        else
-        {
+        else{
            apiInterface = ApiClient.getClient().create(ApiInterface.class);
            Call<Bean_Response_CreditNote> call = apiInterface.UpdateCreditNote(CreditNoteID, PartyID, CreditNoteNo, CreditDate, NoofCases, InvoiceNo, InvoiceDate, TotalQuantity, TotalAmount, DiscountPR, Discount, Total, TaxPR, Tax, OtherCharges, GrandTotal, CForm, Remarks);
            call.enqueue(new Callback<Bean_Response_CreditNote>() {

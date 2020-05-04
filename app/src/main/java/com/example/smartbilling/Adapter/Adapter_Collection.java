@@ -22,9 +22,7 @@ import com.example.smartbilling.Design.AddCollectionActivity;
 import com.example.smartbilling.Design.DetailsCollectionActivity;
 import com.example.smartbilling.R;
 
-import java.util.Collection;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -21,7 +21,6 @@ public class DetailsPackingActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Packing Details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
-
         final String ListID = getIntent().getStringExtra("ListID");
         final String ListType = getIntent().getStringExtra("ListType");
         final String PartyName = getIntent().getStringExtra("PartyName");
@@ -89,7 +88,6 @@ public class DetailsPackingActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

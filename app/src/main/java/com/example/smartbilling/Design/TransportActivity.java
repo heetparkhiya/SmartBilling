@@ -38,21 +38,15 @@ public class TransportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transport);
-
         getSupportActionBar().setTitle("Transport");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         init();
         getAllTransport();
-
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 getAllTransport();
-
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -69,10 +63,8 @@ public class TransportActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvTransportList.setLayoutManager(layoutManager);
-
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_Transport> call = apiInterface.getAllTransport();
         call.enqueue(new Callback<Bean_Response_Transport>() {
@@ -84,9 +76,7 @@ public class TransportActivity extends AppCompatActivity {
                     progress.dismiss();
                 }
                 else
-                {
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -99,7 +89,6 @@ public class TransportActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

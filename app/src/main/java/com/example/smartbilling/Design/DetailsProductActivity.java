@@ -35,8 +35,7 @@ public class DetailsProductActivity extends AppCompatActivity {
         String ProductStyle = getIntent().getStringExtra("ProductStyle");
         String ProductMRP_PR = getIntent().getStringExtra("ProductMRP_PR");
         SizeList = (ArrayList<Bean_Size>) getIntent().getSerializableExtra("Size");
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvSizeList.setLayoutManager(layoutManager);
+        rvSizeList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvSizeList.setAdapter(new Adapter_Size(SizeList, activity));
 
         getSupportActionBar().setTitle(ProductName);
@@ -64,7 +63,6 @@ public class DetailsProductActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;

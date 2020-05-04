@@ -1,5 +1,7 @@
 package com.example.smartbilling.Bean;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -114,5 +116,11 @@ public class Bean_Size implements Serializable {
 
     public void setProductMRP(String productMRP) {
         this.productMRP = productMRP;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return size;
     }
 }

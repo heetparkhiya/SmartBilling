@@ -42,9 +42,7 @@ public class BrokerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         getAllBroker();
-
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -65,25 +63,19 @@ public class BrokerActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
-        rvBrokerList.setLayoutManager(layoutManager);
-
+        rvBrokerList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_Broker> call = apiInterface.getAllBroker();
         call.enqueue(new Callback<Bean_Response_Broker>() {
             @Override
             public void onResponse(Call<Bean_Response_Broker> call, Response<Bean_Response_Broker> response) {
                 if (response.body().getResponse() == 1) {
-                    List<Bean_Broker> SizeList = response.body().getData();
-                    rvBrokerList.setAdapter(new Adapter_Broker(SizeList, activity));
+                    List<Bean_Broker> BrokerList = response.body().getData();
+                    rvBrokerList.setAdapter(new Adapter_Broker(BrokerList, activity));
                     progress.dismiss();
                 }
                 else
-                {
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -96,7 +88,6 @@ public class BrokerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

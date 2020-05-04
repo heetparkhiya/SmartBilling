@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Design.DetailsCollectionActivity"></activity>
+        <activity
+            android:name=".Design.AddProductItemsActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".Design.DetailsCollectionActivity" />
         <activity android:name=".Design.DetailsCreditNoteActivity" />
         <activity android:name=".Design.DetailsPerformInvoiceActivity" />
         <activity android:name=".Design.DetailsProductActivity" />
@@ -23,39 +26,62 @@
         <activity android:name=".Design.DetailsPartyActivity" />
         <activity android:name=".Design.DetailsBrokerActivity" />
         <activity android:name=".Design.DetailsCompanyActivity" />
-        <activity android:name=".Design.AddCollectionActivity" />
+        <activity
+            android:name=".Design.AddCollectionActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.CollectionActivity" />
-        <activity android:name=".Design.AddPerformInvoiceActivity" />
+        <activity
+            android:name=".Design.AddPerformInvoiceActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.PerformInvoiceActivity" />
-        <activity android:name=".Design.AddCreditNoteActivity" />
+        <activity
+            android:name=".Design.AddCreditNoteActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.CreditNoteActivity" />
-        <activity android:name=".Design.AddPackingListActivity" />
+        <activity
+            android:name=".Design.AddPackingListActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.PackingListActivity" />
-        <activity android:name=".Design.AddOrderActivity" />
+        <activity
+            android:name=".Design.AddOrderActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.OrderActivity" />
-        <activity android:name=".Design.AddTransportActivity" />
+        <activity
+            android:name=".Design.AddTransportActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.TransportActivity" />
         <activity android:name=".Design.SizeActivity" />
-        <activity android:name=".Design.AddCompanyActivity" />
+        <activity
+            android:name=".Design.AddCompanyActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.CompanyActivity" />
-        <activity android:name=".Design.AddPartyActivity" />
+        <activity
+            android:name=".Design.AddPartyActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.PartyActivity" />
-        <activity android:name=".Design.AddBrokerActivity" />
+        <activity
+            android:name=".Design.AddBrokerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.BrokerActivity" />
-        <activity android:name=".Design.AddProductActivity" />
-        <activity android:name=".Design.LoginActivity" />
+        <activity
+            android:name=".Design.AddProductActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".Design.LoginActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.DashboardActivity" />
         <activity
             android:name=".Design.InvoiceActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".Design.AddInvoiceActivity" />
+        <activity
+            android:name=".Design.AddInvoiceActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".Design.ProductActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".Design.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -70,5 +96,4 @@
                 android:resource="@xml/provider_path" />
         </provider>
     </application>
-
 </manifest>

@@ -3,9 +3,6 @@ package com.example.smartbilling.Design;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -13,20 +10,21 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.LayoutInflater;
+import android.provider.Telephony;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,20 +32,19 @@ import android.widget.Toast;
 
 import com.example.smartbilling.API.ApiClient;
 import com.example.smartbilling.API.ApiInterface;
-import com.example.smartbilling.Adapter.Adapter_Broker;
-import com.example.smartbilling.Adapter.Adapter_Invoice_Product;
+import com.example.smartbilling.Adapter.Adapter_ProductItems;
 import com.example.smartbilling.Adapter.Adapter_Spinner_Company;
 import com.example.smartbilling.Adapter.Adapter_Spinner_Party;
-import com.example.smartbilling.Adapter.Adapter_Spinner_Product;
 import com.example.smartbilling.Adapter.Adapter_Spinner_Transport;
 import com.example.smartbilling.Bean.Bean_Company;
 import com.example.smartbilling.Bean.Bean_Party;
-import com.example.smartbilling.Bean.Bean_Product;
+import com.example.smartbilling.Bean.Bean_ProductItems;
 import com.example.smartbilling.Bean.Bean_Response_Company;
 import com.example.smartbilling.Bean.Bean_Response_Party;
-import com.example.smartbilling.Bean.Bean_Response_Product;
 import com.example.smartbilling.Bean.Bean_Response_Transport;
 import com.example.smartbilling.Bean.Bean_Transport;
+import com.example.smartbilling.DBConstant.DB_CONSTANT;
+import com.example.smartbilling.DBHelper.DB_ProductList;
 import com.example.smartbilling.R;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -56,10 +53,10 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -67,8 +64,12 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
+
+import javax.security.auth.login.LoginException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,12 +86,11 @@ public class AddInvoiceActivity extends AppCompatActivity {
     TextView tvQuantityTotal, tvAmountTotal, tvIGSTTotal, tvGrandTotal;
     Calendar CurrentDate;
     int day, month, year;
-    String ProductID = "-1";
-    Button btnAddProduct;
-    LinearLayout llAddProduct;
-    RecyclerView rvProductList;
-    List<Bean_Product> RecylerViewProductList = new ArrayList<>();
-    List<Bean_Product> ProductList = new ArrayList<>();
+    String CompanyName = "", CompanyAddress = "", CompanyMobileNo = "", CompanyEmail = "", PartyName = "", PartyAddress = "", PartyMobileNo = "", TransportName = "", TransportMobileNo = "";
+    ListView lvProductList;
+
+    ArrayList<Bean_ProductItems> arrayProductItems;
+    DB_ProductList db_productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,15 +102,6 @@ public class AddInvoiceActivity extends AppCompatActivity {
         init();
         FillSpinner();
 
-        rvProductList.setVisibility(View.GONE);
-        llAddProduct.setVisibility(View.VISIBLE);
-
-        btnAddProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddProductDialog();
-            }
-        });
         CurrentDate = Calendar.getInstance();
         day = CurrentDate.get(Calendar.DAY_OF_MONTH);
         month = CurrentDate.get(Calendar.MONTH);
@@ -145,6 +136,20 @@ public class AddInvoiceActivity extends AppCompatActivity {
                 if (response.body().getResponse() == 1) {
                     final List<Bean_Company> CompanyList = response.body().getData();
                     spCompany.setAdapter(new Adapter_Spinner_Company(CompanyList, activity));
+                    spCompany.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            CompanyName = CompanyList.get(position).getCompanyName();
+                            CompanyAddress = CompanyList.get(position).getCompanyAddress();
+                            CompanyMobileNo = CompanyList.get(position).getCompanyContactNumber();
+                            CompanyEmail = CompanyList.get(position).getCompanyEmail();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                     progress.dismiss();
                 } else {
                     Toast.makeText(activity, "Data not found", Toast.LENGTH_SHORT).show();
@@ -166,6 +171,18 @@ public class AddInvoiceActivity extends AppCompatActivity {
                 if (response.body().getResponse() == 1) {
                     final List<Bean_Party> PartyList = response.body().getData();
                     spParty.setAdapter(new Adapter_Spinner_Party(PartyList, activity));
+                    spParty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            PartyName = PartyList.get(position).getPartyName();
+                            PartyAddress = PartyList.get(position).getAddress();
+                            PartyMobileNo = PartyList.get(position).getMobileNumber();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
                     progress.dismiss();
                 } else {
                     Toast.makeText(activity, "Data not found", Toast.LENGTH_SHORT).show();
@@ -185,8 +202,19 @@ public class AddInvoiceActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Bean_Response_Transport> call, Response<Bean_Response_Transport> response) {
                 if (response.body().getResponse() == 1) {
-                    List<Bean_Transport> TransportList = response.body().getData();
+                    final List<Bean_Transport> TransportList = response.body().getData();
                     spTransport.setAdapter(new Adapter_Spinner_Transport(TransportList, activity));
+                    spTransport.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            TransportName = TransportList.get(position).getTransportName();
+                            TransportMobileNo = TransportList.get(position).getTransportMobileNumber();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
                     progress.dismiss();
                 } else {
                     Toast.makeText(activity, "Data not found", Toast.LENGTH_SHORT).show();
@@ -211,7 +239,8 @@ public class AddInvoiceActivity extends AppCompatActivity {
                 return true;
 
             case R.id.add:
-                AddProductDialog();
+                Intent intent = new Intent(activity, AddProductItemsActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.pdf:
@@ -229,86 +258,39 @@ public class AddInvoiceActivity extends AppCompatActivity {
                 break;
 
             case R.id.clear:
-                Toast.makeText(activity, "Clear", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        db_productList.Delete();
+                        Toast.makeText(activity, "You can add new bill", Toast.LENGTH_SHORT).show();
+                        Intent bill = new Intent(activity, AddInvoiceActivity.class);
+                        startActivity(bill);
+                        finish();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("No", null);
+                alertDialogBuilder.setMessage("Are you sure clear the bill?");
+                alertDialogBuilder.show();
                 break;
         }
         return true;
     }
 
-    void AddProductDialog() {
-        LayoutInflater layoutInflater = LayoutInflater.from(activity);
-        View promptsView = layoutInflater.inflate(R.layout.prompt_product, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-        alertDialogBuilder.setView(promptsView);
-
-        final Spinner spProduct = (Spinner) promptsView.findViewById(R.id.spProduct);
-        final EditText etMRP = (EditText) promptsView.findViewById(R.id.etMRP);
-        final EditText etQuantity = (EditText) promptsView.findViewById(R.id.etQuantity);
-
-        final ProgressDialog progress = new ProgressDialog(activity);
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false);
-        progress.show();
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Product> call = apiInterface.getAllProduct();
-        call.enqueue(new Callback<Bean_Response_Product>() {
-            @Override
-            public void onResponse(Call<Bean_Response_Product> call, Response<Bean_Response_Product> response) {
-                if (response.body().getResponse() == 1) {
-                    ProductList = response.body().getData();
-                    spProduct.setAdapter(new Adapter_Spinner_Product(ProductList, activity));
-                    spProduct.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            RecylerViewProductList.add(ProductList.get(position));
-                            etMRP.setText(ProductList.get(position).getProductMRPPR());
-                            ProductID = ProductList.get(position).getProductID();
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-                    });
-                    progress.dismiss();
-                } else {
-                    Toast.makeText(activity, "Data not found", Toast.LENGTH_SHORT).show();
-                    progress.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Bean_Response_Product> call, Throwable t) {
-                Toast.makeText(activity, "Internet connection problem", Toast.LENGTH_SHORT).show();
-                progress.dismiss();
-            }
-        });
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Save",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                                rvProductList.setLayoutManager(layoutManager);
-                                rvProductList.setAdapter(new Adapter_Invoice_Product(RecylerViewProductList));
-                                progress.dismiss();
-                                llAddProduct.setVisibility(View.GONE);
-                                rvProductList.setVisibility(View.VISIBLE);
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        db_productList = new DB_ProductList(this);
+        arrayProductItems = db_productList.SelectAll();
+        lvProductList.setAdapter(new Adapter_ProductItems(this, arrayProductItems));
+        tvAmountTotal.setText(String.valueOf(db_productList.getAmount()));
+        tvQuantityTotal.setText(String.valueOf(db_productList.getQuantity()));
+        double IGST = Double.parseDouble(tvAmountTotal.getText().toString().trim()) * 0.05;
+        tvIGSTTotal.setText(String.valueOf(IGST));
+        double GrandTotal = Double.parseDouble(tvAmountTotal.getText().toString().trim()) + IGST;
+        tvGrandTotal.setText(String.valueOf(GrandTotal));
     }
 
     void GeneratePDF() {
-
         try {
             createPdfWrapper();
         } catch (FileNotFoundException e) {
@@ -397,11 +379,13 @@ public class AddInvoiceActivity extends AppCompatActivity {
 
         Font Font_20_Bold_Black = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD, BaseColor.BLACK);
         Font Font_25_Bold_Black = new Font(Font.FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLACK);
+        Font Font_10_Bold_Black = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD, BaseColor.BLACK);
+        Font Font_10_Normal_Black = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK);
         Font Font_12_Bold_Black = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.BLACK);
         Font Font_12_Normal_Black = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL, BaseColor.BLACK);
 
         PdfPTable Heading_Table = new PdfPTable(1);
-        Heading_Table.setWidthPercentage(100);
+        Heading_Table.setWidthPercentage(110);
 
         PdfPCell HC1 = new PdfPCell(new Phrase("TAX INVOICE", Font_20_Bold_Black));
         HC1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -409,25 +393,25 @@ public class AddInvoiceActivity extends AppCompatActivity {
         HC1.setBorderWidthBottom(0);
         Heading_Table.addCell(HC1);
 
-        PdfPCell HC2 = new PdfPCell(new Phrase("DRASTY FASHION", Font_25_Bold_Black));
+        PdfPCell HC2 = new PdfPCell(new Phrase(CompanyName, Font_25_Bold_Black));
         HC2.setHorizontalAlignment(Element.ALIGN_CENTER);
         HC2.setBorderWidthTop(0);
         HC2.setBorderWidthBottom(0);
         Heading_Table.addCell(HC2);
 
-        PdfPCell HC3 = new PdfPCell(new Paragraph("Rajkot", Font_12_Normal_Black));
+        PdfPCell HC3 = new PdfPCell(new Paragraph(CompanyAddress, Font_12_Normal_Black));
         HC3.setHorizontalAlignment(Element.ALIGN_CENTER);
         HC3.setBorderWidthTop(0);
         HC3.setBorderWidthBottom(0);
         Heading_Table.addCell(HC3);
 
-        PdfPCell HC4 = new PdfPCell(new Paragraph("9726300583", Font_12_Normal_Black));
+        PdfPCell HC4 = new PdfPCell(new Paragraph(CompanyMobileNo, Font_12_Normal_Black));
         HC4.setHorizontalAlignment(Element.ALIGN_CENTER);
         HC4.setBorderWidthTop(0);
         HC4.setBorderWidthBottom(0);
         Heading_Table.addCell(HC4);
 
-        PdfPCell HC5 = new PdfPCell(new Paragraph("monikbhalodiya7470@gmail.com", Font_12_Normal_Black));
+        PdfPCell HC5 = new PdfPCell(new Paragraph(CompanyEmail, Font_12_Normal_Black));
         HC5.setHorizontalAlignment(Element.ALIGN_CENTER);
         HC5.setBorderWidthTop(0);
         HC5.setBorderWidthBottom(0);
@@ -440,14 +424,14 @@ public class AddInvoiceActivity extends AppCompatActivity {
         document.add(Heading_Table);
 
         PdfPTable Details_Table = new PdfPTable(2);
-        Details_Table.setWidthPercentage(100);
+        Details_Table.setWidthPercentage(110);
 
         PdfPCell DT = new PdfPCell(new Phrase(
-                "Party Name: Bhalodiya Monik" + "\n\n"
-                        + "Address: Tankara" + "\n\n"
-                        + "Mobile No.: 9726300583" + "\n\n"
-                        + "PAN No.: 123456789" + "\n\n"
-                        + "Agent: Monik"
+                "Party Name:" + PartyName + "\n\n"
+                        + "Address: " + PartyAddress + "\n\n"
+                        + "Mobile No.: " + PartyMobileNo + "\n\n"
+                        + "PAN No.: -" + "\n\n"
+                        + "Agent: -"
                 , Font_12_Normal_Black));
         DT.setPadding(5);
         DT.setBorderColor(BaseColor.BLACK);
@@ -455,13 +439,13 @@ public class AddInvoiceActivity extends AppCompatActivity {
         document.add(Details_Table);
 
         DT = new PdfPCell(new Phrase(
-                "Date: 02/04/2020" + "\n\n"
-                        + "Invoice No.: 12345" + "\n\n"
-                        + "Mobile No.: 9726300583" + "\n\n"
+                "Date: " + etInvoiceDate.getText().toString() + "\n\n"
+                        + "Invoice No.: " + etInvoiceNumber.getText().toString() + "\n\n"
                         + "Road Permit" + "\n\n"
-                        + "LR No.: 123" + "\n\n"
-                        + "Transport Name: Demo Transport" + "\n\n"
-                        + "Date: 02/04/2020"
+                        + "LR No.: -" + "\n\n"
+                        + "Date: " + etInvoiceDate.getText().toString() + "\n\n"
+                        + "Transport Name: " + TransportName + "\n\n"
+                        + "Transport Mobile No.: " + TransportMobileNo
                 , Font_12_Normal_Black));
         DT.setPadding(5);
         DT.setBorderColor(BaseColor.BLACK);
@@ -470,19 +454,19 @@ public class AddInvoiceActivity extends AppCompatActivity {
         document.add(Details_Table);
 
         PdfPTable ItemsHeading_Table = new PdfPTable(20);
-        ItemsHeading_Table.setWidthPercentage(100);
+        ItemsHeading_Table.setWidthPercentage(110);
 
-        PdfPCell IHT = new PdfPCell(new Phrase("Sr.", Font_12_Bold_Black));
+        PdfPCell IHT = new PdfPCell(new Phrase("Sr.", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("Design No.", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("Design No.", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("HSN", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("HSN", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
@@ -492,226 +476,226 @@ public class AddInvoiceActivity extends AppCompatActivity {
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("S", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("S", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("M", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("M", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("L", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("L", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("XL", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("XL", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("XXL", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("XXL", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("SXL", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("3XL", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("2", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("2", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("4", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("4", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("6", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("6", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("8", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("8", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("10", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("10", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("12", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("12", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("14", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("14", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("16", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("16", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("Qty.", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("Qty", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        IHT = new PdfPCell(new Phrase("Amt.", Font_12_Bold_Black));
+        IHT = new PdfPCell(new Phrase("Amt", Font_10_Bold_Black));
         IHT.setHorizontalAlignment(Element.ALIGN_CENTER);
         IHT.setPadding(5);
         ItemsHeading_Table.addCell(IHT);
 
-        PdfPCell IHT1 = new PdfPCell(new Paragraph("1"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+        ItemsHeading_Table.setHeaderRows(1);
 
-        IHT1 = new PdfPCell(new Paragraph("Demo"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_LEFT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+        try {
+            SQLiteAssetHelper sql = new SQLiteAssetHelper(this, DB_CONSTANT.DB_NAME, null, DB_CONSTANT.DB_VERSION);
+            SQLiteDatabase db = sql.getReadableDatabase();
+            String strQuery = "Select * from MST_ProductItems";
+            Cursor cur = db.rawQuery(strQuery, null);
+            if (cur.moveToFirst()) {
+                do {
+                    PdfPCell IHT1 = new PdfPCell(new Paragraph("1", Font_10_Normal_Black));
+                    IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    IHT1.setPadding(5);
+                    ItemsHeading_Table.addCell(IHT1);
 
-        IHT1 = new PdfPCell(new Paragraph("1111"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    String DesignNo = (cur.getString(cur.getColumnIndex("DesignNo")));
+                    IHT1 = new PdfPCell(new Paragraph(DesignNo, Font_10_Normal_Black));
+                    IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    IHT1.setPadding(5);
+                    ItemsHeading_Table.addCell(IHT1);
 
-        IHT1 = new PdfPCell(new Paragraph("QTY. & AMT."));
-        IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    IHT1 = new PdfPCell(new Paragraph("6108", Font_10_Normal_Black));
+                    IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    IHT1.setPadding(5);
+                    ItemsHeading_Table.addCell(IHT1);
 
-        IHT1 = new PdfPCell(new Paragraph("10"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    IHT1 = new PdfPCell(new Paragraph("Qty & Amt", Font_10_Normal_Black));
 
-        IHT1 = new PdfPCell(new Paragraph("20"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    IHT1.setPadding(5);
+                    ItemsHeading_Table.addCell(IHT1);
 
-        IHT1 = new PdfPCell(new Paragraph("30"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    String Size = cur.getString(cur.getColumnIndex("Size"));
+                    Size = Size.charAt(0) == ',' ? Size.substring(1, Size.length()) : Size;
+                    //Size = Size.substring(1,Size.length() - 1);
+                    String[] allIdsArray = TextUtils.split(Size, ",");
+                    ArrayList<String> idsList = new ArrayList<String>(Arrays.asList(allIdsArray));
 
-        IHT1 = new PdfPCell(new Paragraph("40"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    List<String> Sizes = new ArrayList<>();
+                    Sizes.add("S");
+                    Sizes.add("M");
+                    Sizes.add("L");
+                    Sizes.add("XL");
+                    Sizes.add("XXL");
+                    Sizes.add("3XL");
+                    Sizes.add("2");
+                    Sizes.add("4");
+                    Sizes.add("6");
+                    Sizes.add("8");
+                    Sizes.add("10");
+                    Sizes.add("12");
+                    Sizes.add("14");
+                    Sizes.add("16");
 
-        IHT1 = new PdfPCell(new Paragraph("50"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    String RateSize = (cur.getString(cur.getColumnIndex("RateSize")).trim());
+                    RateSize = RateSize.replaceAll("\\[","").trim();
+                    RateSize = RateSize.replaceAll("]","").trim();
+                    if(RateSize.charAt(0) == ',')
+                    {
+                        RateSize = RateSize.substring(1,RateSize.length() - 1);
+                    }
+                    Log.e("RateSize", RateSize);
 
-        IHT1 = new PdfPCell(new Paragraph("60"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    String MRP_Size = (cur.getString(cur.getColumnIndex("MRP_Size")).trim());
+                    MRP_Size = MRP_Size.replaceAll("\\[","").trim();
+                    MRP_Size = MRP_Size.replaceAll("]","").trim();
+                    if(MRP_Size.charAt(0) == ',')
+                    {
+                        MRP_Size = MRP_Size.substring(1,MRP_Size.length() - 1);
+                    }
+                    Log.e("MRP_Size", MRP_Size);
 
-        IHT1 = new PdfPCell(new Paragraph("70"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    int j = 0;
+                    for(int i=0; i<Sizes.size(); i++)
+                    {
+                        if(j < idsList.size() && Sizes.get(i).trim().equals(idsList.get(j).trim()))
+                        {
+                            Log.e("Sizes", idsList.toString());
+                            j++;
+                            IHT1 = new PdfPCell(new Paragraph(RateSize +","+ MRP_Size, Font_10_Normal_Black));
+                            IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                            IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                            IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                            IHT1.setPadding(5);
+                            ItemsHeading_Table.addCell(IHT1);
+                        }else
+                        {
+                            IHT1 = new PdfPCell(new Paragraph("-", Font_10_Normal_Black));
+                            IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                            IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                            IHT1.setPadding(5);
+                            ItemsHeading_Table.addCell(IHT1);
+                        }
+                    }
 
-        IHT1 = new PdfPCell(new Paragraph("80"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
 
-        IHT1 = new PdfPCell(new Paragraph("90"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    // Total QTY.
+                    String Qty = (cur.getString(cur.getColumnIndex("Qty")));
+                    IHT1 = new PdfPCell(new Paragraph(Qty, Font_10_Normal_Black));
+                    IHT1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                    IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    IHT1.setPadding(5);
+                    ItemsHeading_Table.addCell(IHT1);
 
-        IHT1 = new PdfPCell(new Paragraph("100"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
+                    String Amount = (cur.getString(cur.getColumnIndex("Amount")));
+                    IHT1 = new PdfPCell(new Paragraph(Amount, Font_10_Normal_Black));
+                    IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    IHT1.setPadding(5);
+                    ItemsHeading_Table.addCell(IHT1);
+                } while (cur.moveToNext());
+            }
+            db.close();
+        } catch (Exception e) {
+            System.out.println("Error");
+        }
 
-        IHT1 = new PdfPCell(new Paragraph("110"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
-
-        IHT1 = new PdfPCell(new Paragraph("120"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
-
-        IHT1 = new PdfPCell(new Paragraph("130"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
-
-        IHT1 = new PdfPCell(new Paragraph("140"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
-
-        IHT1 = new PdfPCell(new Paragraph("150"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
-
-        IHT1 = new PdfPCell(new Paragraph("160"));
-        IHT1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        IHT1.setPadding(5);
-        ItemsHeading_Table.addCell(IHT1);
-
-        PdfPCell IHT2 = new PdfPCell(new Paragraph("Total:", Font_12_Bold_Black));
+        PdfPCell IHT2 = new PdfPCell(new Paragraph("Total:", Font_10_Bold_Black));
         IHT2.setColspan(18);
         IHT2.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT2.setVerticalAlignment(Element.ALIGN_MIDDLE);
         IHT2.setPadding(5);
         ItemsHeading_Table.addCell(IHT2);
 
-        IHT2 = new PdfPCell(new Paragraph("110", Font_12_Bold_Black));
+        IHT2 = new PdfPCell(new Paragraph(tvQuantityTotal.getText().toString(), Font_10_Bold_Black));
         IHT2.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT2.setVerticalAlignment(Element.ALIGN_MIDDLE);
         IHT2.setPadding(5);
         ItemsHeading_Table.addCell(IHT2);
 
-        IHT2 = new PdfPCell(new Paragraph("120", Font_12_Bold_Black));
+        IHT2 = new PdfPCell(new Paragraph(tvAmountTotal.getText().toString(), Font_10_Bold_Black));
         IHT2.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT2.setVerticalAlignment(Element.ALIGN_MIDDLE);
         IHT2.setPadding(5);
         ItemsHeading_Table.addCell(IHT2);
 
-        PdfPCell IHT3 = new PdfPCell(new Paragraph("TaxableAmount", Font_12_Bold_Black));
+        PdfPCell IHT3 = new PdfPCell(new Paragraph("TaxableAmount", Font_10_Bold_Black));
         IHT3.setColspan(18);
         IHT3.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT3.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -724,7 +708,7 @@ public class AddInvoiceActivity extends AppCompatActivity {
         IHT3.setBorderWidthBottom(0);
         ItemsHeading_Table.addCell(IHT3);
 
-        PdfPCell IHT4 = new PdfPCell(new Paragraph("IGST: 5%", Font_12_Bold_Black));
+        PdfPCell IHT4 = new PdfPCell(new Paragraph("IGST: 5%", Font_10_Bold_Black));
         IHT4.setColspan(18);
         IHT4.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT4.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -732,7 +716,7 @@ public class AddInvoiceActivity extends AppCompatActivity {
         IHT4.setBorderWidthTop(0);
         ItemsHeading_Table.addCell(IHT4);
 
-        IHT4 = new PdfPCell(new Paragraph("150", Font_12_Bold_Black));
+        IHT4 = new PdfPCell(new Paragraph(tvIGSTTotal.getText().toString(), Font_10_Bold_Black));
         IHT4.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT4.setVerticalAlignment(Element.ALIGN_MIDDLE);
         IHT4.setColspan(2);
@@ -740,14 +724,14 @@ public class AddInvoiceActivity extends AppCompatActivity {
         IHT4.setBorderWidthTop(0);
         ItemsHeading_Table.addCell(IHT4);
 
-        PdfPCell IHT5 = new PdfPCell(new Paragraph("Grand Total", Font_12_Bold_Black));
+        PdfPCell IHT5 = new PdfPCell(new Paragraph("Grand Total", Font_10_Bold_Black));
         IHT5.setColspan(18);
         IHT5.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT5.setVerticalAlignment(Element.ALIGN_MIDDLE);
         IHT5.setPadding(5);
         ItemsHeading_Table.addCell(IHT5);
 
-        IHT5 = new PdfPCell(new Paragraph("1000", Font_12_Bold_Black));
+        IHT5 = new PdfPCell(new Paragraph(tvGrandTotal.getText().toString(), Font_10_Bold_Black));
         IHT5.setColspan(2);
         IHT5.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT5.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -776,8 +760,6 @@ public class AddInvoiceActivity extends AppCompatActivity {
         tvAmountTotal = (TextView) findViewById(R.id.tvAmountTotal);
         tvIGSTTotal = (TextView) findViewById(R.id.tvIGSTTotal);
         tvGrandTotal = (TextView) findViewById(R.id.tvGrandTotal);
-        btnAddProduct = (Button) findViewById(R.id.btnAddProduct);
-        llAddProduct = (LinearLayout) findViewById(R.id.llAddProduct);
-        rvProductList = (RecyclerView) findViewById(R.id.rvProductList);
+        lvProductList = (ListView) findViewById(R.id.lvProductList);
     }
 }

@@ -22,7 +22,6 @@ public class DetailsOrderActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Order Details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
-
         final String ListID = getIntent().getStringExtra("ListID");
         final String ListType = getIntent().getStringExtra("ListType");
         final String PartyName = getIntent().getStringExtra("PartyName");
@@ -90,7 +89,6 @@ public class DetailsOrderActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

@@ -2,6 +2,7 @@ package com.example.smartbilling.Design;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -68,10 +69,7 @@ public class SizeActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvSizeList.setLayoutManager(layoutManager);
-
+        rvSizeList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_Size> call = apiInterface.getAllSize();
         call.enqueue(new Callback<Bean_Response_Size>() {
@@ -81,9 +79,8 @@ public class SizeActivity extends AppCompatActivity {
                     List<Bean_Size> SizeList = response.body().getData();
                     rvSizeList.setAdapter(new Adapter_Size(SizeList, activity));
                     progress.dismiss();
-                } else {
+                } else
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -107,9 +104,7 @@ public class SizeActivity extends AppCompatActivity {
                 View promptsView = layoutInflater.inflate(R.layout.prompt_size, null);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
                 alertDialogBuilder.setView(promptsView);
-
                 final EditText etSize = (EditText) promptsView.findViewById(R.id.etSize);
-
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("Save",
@@ -138,7 +133,6 @@ public class SizeActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-
         String UserId = "1";
         String Remarks = "NULL";
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -146,6 +140,14 @@ public class SizeActivity extends AppCompatActivity {
         call.enqueue(new Callback<Bean_Response_Size>() {
             @Override
             public void onResponse(Call<Bean_Response_Size> call, Response<Bean_Response_Size> response) {
+                if(response.body().getResponse() == 1){
+                    Toast.makeText(activity, "Size added", Toast.LENGTH_SHORT).show();
+                    progress.dismiss();
+                }
+                else{
+                    Toast.makeText(activity, "Size not added", Toast.LENGTH_SHORT).show();
+                    progress.dismiss();
+                }
             }
 
             @Override
@@ -153,8 +155,6 @@ public class SizeActivity extends AppCompatActivity {
                 progress.dismiss();
             }
         });
-        Toast.makeText(activity, "Size added", Toast.LENGTH_SHORT).show();
-        progress.dismiss();
     }
 
     @Override

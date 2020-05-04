@@ -22,7 +22,6 @@ public class DetailsPartyActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
-
         final String PartyID = getIntent().getStringExtra("PartyID");
         final String PartyName = getIntent().getStringExtra("PartyName");
         final String PartyMobileNumber = getIntent().getStringExtra("PartyMobileNumber");
@@ -40,7 +39,6 @@ public class DetailsPartyActivity extends AppCompatActivity {
         final String PartyCreditDays = getIntent().getStringExtra("PartyCreditDays");
         final String PartyDISC = getIntent().getStringExtra("PartyDISC");
         final String PartyFaxNumber = getIntent().getStringExtra("PartyFaxNumber");
-
         final String PartyBrokerID = getIntent().getStringExtra("PartyBrokerID");
         final String PartyBrokerName = getIntent().getStringExtra("PartyBrokerName");
         final String PartyBrokerRate = getIntent().getStringExtra("PartyBrokerRate");
@@ -49,7 +47,6 @@ public class DetailsPartyActivity extends AppCompatActivity {
         final String PartyBrokerEmail = getIntent().getStringExtra("PartyBrokerEmail");
         final String PartyBrokerAddress = getIntent().getStringExtra("PartyBrokerAddress");
         final String PartyBrokerFaxNo = getIntent().getStringExtra("PartyBrokerFaxNo");
-
         final String PartyTransportID = getIntent().getStringExtra("PartyTransportID");
         final String PartyTransportName = getIntent().getStringExtra("PartyTransportName");
         final String PartyTransportAddress = getIntent().getStringExtra("PartyTransportAddress");
@@ -191,7 +188,6 @@ public class DetailsPartyActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

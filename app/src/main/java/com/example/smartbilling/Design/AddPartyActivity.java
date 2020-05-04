@@ -1,7 +1,6 @@
 package com.example.smartbilling.Design;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,10 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.smartbilling.API.ApiClient;
 import com.example.smartbilling.API.ApiInterface;
 import com.example.smartbilling.Adapter.Adapter_Spinner_Broker;
@@ -23,9 +23,7 @@ import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.Bean.Bean_Response_Transport;
 import com.example.smartbilling.Bean.Bean_Transport;
 import com.example.smartbilling.R;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,17 +34,15 @@ public class AddPartyActivity extends AppCompatActivity {
     EditText etPartyName, etPartyRefName, etPartyAddress, etPartyBankThrough, etPartyPin, etPartyCity, etPartyState, etPartyTelephoneNo, etPartyFaxNo, etPartyMobileNumber, etPartyEmail, etPartyLocation, etPartyCreditDays, etPartyTinNo, etPartyCSTNo, etPartyDISC, etPartyBrokerRage;
     Spinner spPartyTransport, spPartyBroker;
     ApiInterface apiInterface;
-    String PartyID, PartyName, PartyMobileNumber, PartyTelephoneNumber, PartyEmail, PartyAddress, PartyCity, PartyState, PartyPin, PartyLocation, PartyRefName, PartyCSTNumber, PartyTINNumber, PartyBankThrough, PartyCreditDays, PartyDISC, PartyFaxNumber, PartyBrokerID, PartyTransportID, PartyBrokerRage;
+    String TransportID, BrokerID, PartyID, PartyName, PartyMobileNumber, PartyTelephoneNumber, PartyEmail, PartyAddress, PartyCity, PartyState, PartyPin, PartyLocation, PartyRefName, PartyCSTNumber, PartyTINNumber, PartyBankThrough, PartyCreditDays, PartyDISC, PartyFaxNumber, PartyBrokerID, PartyTransportID, PartyBrokerRage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_party);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         FillSpinner();
-
         PartyID = getIntent().getStringExtra("PartyID");
         PartyName = getIntent().getStringExtra("PartyName");
         PartyMobileNumber = getIntent().getStringExtra("PartyMobileNumber");
@@ -108,8 +104,19 @@ public class AddPartyActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Bean_Response_Transport> call, Response<Bean_Response_Transport> response) {
                 if (response.body().getResponse() == 1) {
-                    List<Bean_Transport> TransportList = response.body().getData();
+                    final List<Bean_Transport> TransportList = response.body().getData();
                     spPartyTransport.setAdapter(new Adapter_Spinner_Transport(TransportList, activity));
+                    spPartyTransport.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            TransportID = TransportList.get(position).getTransportID();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                     progress.dismiss();
                 } else {
                     Toast.makeText(activity, "Data not found", Toast.LENGTH_SHORT).show();
@@ -129,8 +136,19 @@ public class AddPartyActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Bean_Response_Broker> call, Response<Bean_Response_Broker> response) {
                 if (response.body().getResponse() == 1) {
-                    List<Bean_Broker> BrokerList = response.body().getData();
+                    final List<Bean_Broker> BrokerList = response.body().getData();
                     spPartyBroker.setAdapter(new Adapter_Spinner_Broker(BrokerList, activity));
+                    spPartyBroker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            BrokerID = BrokerList.get(position).getBrokerID();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                     progress.dismiss();
                 } else {
                     Toast.makeText(activity, "Data not found", Toast.LENGTH_SHORT).show();
@@ -148,7 +166,6 @@ public class AddPartyActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -260,10 +277,8 @@ public class AddPartyActivity extends AppCompatActivity {
         String PartyCSTNo = etPartyCSTNo.getText().toString().trim();
         String PartyCreditDays = etPartyCreditDays.getText().toString().trim();
         String PartyDISC = etPartyDISC.getText().toString().trim();
-
-        /*Here get the id of spinner pending work*/
-        String PartyTransport = "1";
-        String PartyBroker = "1";
+        String PartyTransport = TransportID;
+        String PartyBroker = BrokerID;
 
         String PartyBrokerRage = etPartyBrokerRage.getText().toString().trim();
         String UserId = "1";

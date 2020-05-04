@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.smartbilling.API.ApiClient;
 import com.example.smartbilling.API.ApiInterface;
 import com.example.smartbilling.Bean.Bean_Response_Company;
@@ -25,7 +24,7 @@ public class AddCompanyActivity extends AppCompatActivity {
 
     final Activity activity = this;
     EditText etCompanyName, etCompanyAddress, etCompanyNumber, etCompanyFaxNo, etCompanyEmail, etCompanyVatTinNo, etCompanyCstTinNo;
-    String CompanyID = "", CompanyName = "", CompanyContactNo = "", CompanyAddress = "", CompanyEmail = "", CompanyVAT_TIN_NO = "", CompanyCST_TIN_NO = "", CompanyFaxNO = "";
+    String CompanyID, CompanyName, CompanyContactNo, CompanyAddress, CompanyEmail, CompanyVAT_TIN_NO, CompanyCST_TIN_NO, CompanyFaxNO;
     ApiInterface apiInterface;
 
     @Override
@@ -34,7 +33,6 @@ public class AddCompanyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_company);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
-
         CompanyID = getIntent().getStringExtra("CompanyID");
         CompanyName = getIntent().getStringExtra("CompanyName");
         CompanyContactNo = getIntent().getStringExtra("CompanyContactNo");
@@ -125,7 +123,6 @@ public class AddCompanyActivity extends AppCompatActivity {
         String UserId = "1";
         String Remarks = "NULL";
 
-
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -153,7 +150,6 @@ public class AddCompanyActivity extends AppCompatActivity {
                     progress.dismiss();
                 }
             });
-
         } else {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
             Call<Bean_Response_Company> call = apiInterface.UpdateCompany(CompanyID, CompanyName, CompanyAddress, CompanyContactNumber, CompanyFaxNo, CompanyEmail, CompanyVAT_TIN_NO, CompanyCST_TIN_NO, Remarks);

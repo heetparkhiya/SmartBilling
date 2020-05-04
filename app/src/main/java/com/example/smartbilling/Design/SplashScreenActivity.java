@@ -16,7 +16,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         getSupportActionBar().hide();
-
         final SessionManager manager = new SessionManager(SplashScreenActivity.this);
         if (manager.isLoggedIn()) {
             Thread timerThread = new Thread() {
@@ -32,15 +31,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             };
             timerThread.start();
-        } else {
+        } else
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     manager.checkLogin();
                 }
             },2000);
-        }
-
     }
 
     @Override

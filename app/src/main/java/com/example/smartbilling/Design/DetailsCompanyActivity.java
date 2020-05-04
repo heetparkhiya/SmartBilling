@@ -21,7 +21,6 @@ public class DetailsCompanyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details_company);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
-
         final String CompanyID = getIntent().getStringExtra("CompanyID");
         final String CompanyName = getIntent().getStringExtra("CompanyName");
         final String CompanyContactNumber = getIntent().getStringExtra("CompanyContactNumber");
@@ -30,7 +29,6 @@ public class DetailsCompanyActivity extends AppCompatActivity {
         final String CompanyVAT_TIN_No = getIntent().getStringExtra("CompanyVAT_TIN_No");
         final String CompanyCST_TIN_No = getIntent().getStringExtra("CompanyCST_TIN_No");
         final String CompanyFaxNo = getIntent().getStringExtra("CompanyFaxNo");
-
         getSupportActionBar().setTitle(CompanyName);
 
         if(CompanyContactNumber != null)
@@ -72,7 +70,6 @@ public class DetailsCompanyActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
