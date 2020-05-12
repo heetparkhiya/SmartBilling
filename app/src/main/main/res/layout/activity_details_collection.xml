@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    tools:context=".Design.DetailsCollectionActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout style="@style/ScrollViewLinearLayout">
+
+            <androidx.cardview.widget.CardView style="@style/DetailsScreenCardViewDesign">
+
+                <LinearLayout style="@style/DetailsScreenLinearLayoutDesign">
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingTextViewDesign"
+                        android:text="Party Name" />
+
+                    <TextView
+                        android:id="@+id/tvPartyName"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                                android:text="Bill No." />
+
+                            <TextView
+                                android:id="@+id/tvBillNo"
+                                style="@style/DetailsScreenSubTextViewDesign" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                                android:text="Bill Date" />
+
+                            <TextView
+                                android:id="@+id/tvBillDate"
+                                style="@style/DetailsScreenSubTextViewDesign" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                                android:text="Days" />
+
+                            <TextView
+                                android:id="@+id/tvDays"
+                                style="@style/DetailsScreenSubTextViewDesign" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="Bank Name" />
+
+                    <TextView
+                        android:id="@+id/tvPartyBank"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="Bank Branch" />
+
+                    <TextView
+                        android:id="@+id/tvPartyBankBranch"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView style="@style/DetailsScreenCardViewDesign">
+
+                <LinearLayout style="@style/DetailsScreenLinearLayoutDesign">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/DetailsScreenHeadingTextViewDesign"
+                                android:text="Collection No." />
+
+
+                            <TextView
+                                android:id="@+id/tvCollectionNo"
+                                style="@style/DetailsScreenSubTextViewDesign" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/DetailsScreenHeadingTextViewDesign"
+                                android:text="Collection Date" />
+
+
+                            <TextView
+                                android:id="@+id/tvCollectionDate"
+                                style="@style/DetailsScreenSubTextViewDesign" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="Mode of Payment" />
+
+
+                    <TextView
+                        android:id="@+id/tvPaymentMode"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="Cheque No." />
+
+
+                    <TextView
+                        android:id="@+id/tvChequeNo"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingMarginTextViewDesign"
+                        android:text="Cheque Date" />
+
+
+                    <TextView
+                        android:id="@+id/tvChequeDate"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView style="@style/DetailsScreenCardViewDesign">
+
+                <LinearLayout style="@style/DetailsScreenLinearLayoutDesign">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Bill Amount"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/tvBillAmount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Credit Note"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/tvCreditNote"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Discount %"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/tvDiscountPR"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Discount"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/tvDiscount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Received Amount"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/tvReceivedAmount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Collection Amount"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/tvCollectionAmount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView style="@style/DetailsScreenCardViewDesign">
+
+                <LinearLayout style="@style/DetailsScreenLinearLayoutDesign">
+
+                    <TextView
+                        style="@style/DetailsScreenHeadingTextViewDesign"
+                        android:text="Clearance Date" />
+
+                    <TextView
+                        android:id="@+id/tvClearanceDate"
+                        style="@style/DetailsScreenSubTextViewDesign" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
