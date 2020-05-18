@@ -1,6 +1,7 @@
 package com.example.smartbilling.Adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,13 +70,17 @@ public class Adapter_ProductItems extends BaseAdapter {
 
         holder.txtID.setText(arrayItems.get(i).getItemID() + "");
         holder.txtDesign.setText(arrayItems.get(i).getDesignNo() + "");
-        String Size = arrayItems.get(i).getSize().trim().replaceAll("\\[", "").replaceAll("\\]", "");
+        if(arrayItems.get(i).getSize() != null) {
+            String Size = arrayItems.get(i).getSize().trim().replaceAll("\\[", "").replaceAll("\\]", "");
+            Size = Size.charAt(0) == ',' ? Size.substring(1, Size.length()) : Size;
+            holder.txtSize.setText(Size);
+        }
+
         /*if (Size.charAt(0) == ',') {
             Size = Size.substring(1, Size.length() - 1);
         }*/
-        Size = Size.charAt(0) == ',' ? Size.substring(1, Size.length()) : Size;
-        holder.txtSize.setText(Size);
         holder.txtRate.setText(arrayItems.get(i).getRateSize() + "");
+        Log.e("QTY",arrayItems.get(i).getQty());
         holder.txtQuantity.setText(arrayItems.get(i).getQty() + "");
         holder.txtAmount.setText(arrayItems.get(i).getAmount() + "");
         return view;

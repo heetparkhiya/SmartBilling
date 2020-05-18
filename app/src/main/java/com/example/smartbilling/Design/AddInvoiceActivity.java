@@ -76,7 +76,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddInvoiceActivity extends AppCompatActivity {
-
     final Activity activity = this;
     File pdfFile;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 111;
@@ -281,7 +280,9 @@ public class AddInvoiceActivity extends AppCompatActivity {
         super.onResume();
         db_productList = new DB_ProductList(this);
         arrayProductItems = db_productList.SelectAll();
-        lvProductList.setAdapter(new Adapter_ProductItems(this, arrayProductItems));
+        if(arrayProductItems.size() > 0) {
+            lvProductList.setAdapter(new Adapter_ProductItems(this, arrayProductItems));
+        }
         tvAmountTotal.setText(String.valueOf(db_productList.getAmount()));
         tvQuantityTotal.setText(String.valueOf(db_productList.getQuantity()));
         double IGST = Double.parseDouble(tvAmountTotal.getText().toString().trim()) * 0.05;
@@ -631,19 +632,32 @@ public class AddInvoiceActivity extends AppCompatActivity {
                     }
                     Log.e("MRP_Size", MRP_Size);
 
+                    String QTY = (cur.getString(cur.getColumnIndex("SizeWiseQty")));
+                    QTY = QTY.replaceAll("\\[","").trim();
+                    QTY = QTY.replaceAll("]","").trim();
+                    if(QTY.charAt(0) == ',')
+                    {
+                        QTY = QTY.substring(1,QTY.length() - 1);
+                    }
+                    List<String> SizeWiseQTY = Arrays.asList(QTY.split("\\s*,\\s*"));
+                    List<String> Rate = Arrays.asList(RateSize.split("\\s*,\\s*"));
+                    List<String> MRP = Arrays.asList(MRP_Size.split("\\s*,\\s*"));
+                    Log.e("QTYPDF", QTY);
+
                     int j = 0;
                     for(int i=0; i<Sizes.size(); i++)
                     {
                         if(j < idsList.size() && Sizes.get(i).trim().equals(idsList.get(j).trim()))
                         {
                             Log.e("Sizes", idsList.toString());
-                            j++;
-                            IHT1 = new PdfPCell(new Paragraph(RateSize +","+ MRP_Size, Font_10_Normal_Black));
+
+                            IHT1 = new PdfPCell(new Paragraph(SizeWiseQTY.get(j) + "," + Rate.get(j) +","+ MRP.get(j), Font_10_Normal_Black));
                             IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
                             IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
                             IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                             IHT1.setPadding(5);
                             ItemsHeading_Table.addCell(IHT1);
+                            j++;
                         }else
                         {
                             IHT1 = new PdfPCell(new Paragraph("-", Font_10_Normal_Black));
@@ -673,7 +687,7 @@ public class AddInvoiceActivity extends AppCompatActivity {
             }
             db.close();
         } catch (Exception e) {
-            System.out.println("Error");
+            Log.e("Error", e.getMessage());
         }
 
         PdfPCell IHT2 = new PdfPCell(new Paragraph("Total:", Font_10_Bold_Black));

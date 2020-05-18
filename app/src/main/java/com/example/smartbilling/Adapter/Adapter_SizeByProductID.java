@@ -63,15 +63,15 @@ public class Adapter_SizeByProductID extends RecyclerView.Adapter<Adapter_SizeBy
         holder.tvSizeName.setText(list.get(position).getSize());
         holder.tvSizeMRP.setText(list.get(position).getMRP());
         holder.tvSizeRate.setText(list.get(position).getRate());
-        List<Bean_Product_Item_Size> itemSizes = new ArrayList<>();
+
         holder.chSizeCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (holder.chSizeCheckbox.isChecked()){
-                    ((AddProductItemsActivity)activity).insertProductWiseSize(new Bean_Product_Item_Size(list.get(position).getSize(),list.get(position).getRate(),list.get(position).getMRP()));
+                    ((AddProductItemsActivity)activity).insertProductWiseSize(new Bean_Product_Item_Size(list.get(position).getSize(),list.get(position).getRate(),list.get(position).getMRP(),holder.etSizeQty.getText().toString().trim()));
                 }
                 else {
-                    ((AddProductItemsActivity)activity).deleteProductWiseSize(new Bean_Product_Item_Size(list.get(position).getSize(),list.get(position).getRate(),list.get(position).getMRP()));
+                    ((AddProductItemsActivity)activity).deleteProductWiseSize(new Bean_Product_Item_Size(list.get(position).getSize(),list.get(position).getRate(),list.get(position).getMRP(),holder.etSizeQty.getText().toString().trim()));
                 }
             }
         });

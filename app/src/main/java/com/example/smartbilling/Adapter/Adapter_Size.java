@@ -29,10 +29,12 @@ public class Adapter_Size extends RecyclerView.Adapter<Adapter_Size.SizeViewHold
 
     private List<Bean_Size> SizeList;
     private Activity activity;
+    private  int isDelete;
 
-    public Adapter_Size(List<Bean_Size> SizeList, Activity activity) {
+    public Adapter_Size(List<Bean_Size> SizeList, Activity activity,int isDelete) {
         this.SizeList = SizeList;
         this.activity = activity;
+        this.isDelete = isDelete;
     }
 
     public static class SizeViewHolder extends RecyclerView.ViewHolder {
@@ -59,7 +61,7 @@ public class Adapter_Size extends RecyclerView.Adapter<Adapter_Size.SizeViewHold
     public void onBindViewHolder(final Adapter_Size.SizeViewHolder holder, final int position) {
         holder.tvSizeID.setText(SizeList.get(position).getSizeID());
         holder.tvSize.setText(SizeList.get(position).getSize());
-
+        holder.imgDelete.setVisibility(isDelete);
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

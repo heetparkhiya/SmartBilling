@@ -21,11 +21,24 @@ public class Bean_Product_Item_Size {
     @Expose
     private String mRP;
 
-    public Bean_Product_Item_Size(String size, String rate, String mRP) {
+    private String SizeWiseQty;
+
+    public Bean_Product_Item_Size(String size, String rate, String mRP, String SizeWiseQty) {
         this.size = size;
         this.rate = rate;
         this.mRP = mRP;
+        this.SizeWiseQty = SizeWiseQty;
     }
+
+    public String getSizeWiseQty() {
+        return SizeWiseQty;
+    }
+
+    public void setSizeWiseQty(String sizeWiseQty) {
+        SizeWiseQty = sizeWiseQty;
+    }
+
+
 
     public String getProductID() {
         return productID;

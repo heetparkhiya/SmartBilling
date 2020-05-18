@@ -9,19 +9,28 @@ public class Bean_ProductItems {
     String Amount;
     String RateSize;
     String MRP_Size;
+    String SizeWiseQty;
 
-    public Bean_ProductItems(String designNo, String size, String rate, String qty, String amount, String rateSize, String mrp_size) {
-        DesignNo = designNo;
-        Size = size;
-        Rate = rate;
-        Qty = qty;
-        Amount = amount;
-        RateSize = rateSize;
-        MRP_Size = mrp_size;
+    public Bean_ProductItems(String designNo, String size, String rate, String SizeWiseQty, String amount, String rateSize, String mrp_size) {
+        this.DesignNo = designNo;
+        this.Size = size;
+        this.Rate = rate;
+        this.SizeWiseQty = SizeWiseQty;
+        this.Amount = amount;
+        this.RateSize = rateSize;
+        this.MRP_Size = mrp_size;
     }
 
     public Bean_ProductItems() {
 
+    }
+
+    public String getSizeWiseQty() {
+        return SizeWiseQty;
+    }
+
+    public void setSizeWiseQty(String sizeWiseQty) {
+        SizeWiseQty = sizeWiseQty;
     }
 
     public String getRateSize() {

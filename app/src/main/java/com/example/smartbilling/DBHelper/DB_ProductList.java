@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.smartbilling.Bean.Bean_ProductItems;
 import com.example.smartbilling.DBConstant.DB_CONSTANT;
@@ -22,6 +23,8 @@ public class DB_ProductList extends SQLiteAssetHelper {
         insertValues.put("DesignNo", add.getDesignNo());
         insertValues.put("Size", add.getSize());
         insertValues.put("Rate", "NULL");
+        Log.e("added",add.getSizeWiseQty());
+        insertValues.put("SizeWiseQty", add.getSizeWiseQty());
         insertValues.put("Qty", "NULL");
         insertValues.put("Amount", "NULL");
         insertValues.put("RateSize", add.getRateSize());
@@ -44,6 +47,7 @@ public class DB_ProductList extends SQLiteAssetHelper {
                 Product.setRate(cursor.getString(cursor.getColumnIndex("Rate")));
                 Product.setQty(cursor.getString(cursor.getColumnIndex("Qty")));
                 Product.setAmount(cursor.getString(cursor.getColumnIndex("Amount")));
+                Product.setSizeWiseQty(cursor.getString(cursor.getColumnIndex("SizeWiseQty")));
                 arrayList.add(Product);
             } while (cursor.moveToNext());
         }
@@ -77,4 +81,11 @@ public class DB_ProductList extends SQLiteAssetHelper {
         db.execSQL(strQuery);
         db.close();
     }
+
+   /* @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        oldVersion = 1;
+        newVersion = 2;
+        super.onUpgrade(db, oldVersion, newVersion);
+    }*/
 }

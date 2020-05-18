@@ -36,7 +36,7 @@ public class DetailsProductActivity extends AppCompatActivity {
         String ProductMRP_PR = getIntent().getStringExtra("ProductMRP_PR");
         SizeList = (ArrayList<Bean_Size>) getIntent().getSerializableExtra("Size");
         rvSizeList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        rvSizeList.setAdapter(new Adapter_Size(SizeList, activity));
+        rvSizeList.setAdapter(new Adapter_Size(SizeList, activity,8));
 
         getSupportActionBar().setTitle(ProductName);
 

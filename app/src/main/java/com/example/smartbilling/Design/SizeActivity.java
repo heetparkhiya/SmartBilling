@@ -77,7 +77,7 @@ public class SizeActivity extends AppCompatActivity {
             public void onResponse(Call<Bean_Response_Size> call, Response<Bean_Response_Size> response) {
                 if (response.body().getResponse() == 1) {
                     List<Bean_Size> SizeList = response.body().getData();
-                    rvSizeList.setAdapter(new Adapter_Size(SizeList, activity));
+                    rvSizeList.setAdapter(new Adapter_Size(SizeList, activity,0));
                     progress.dismiss();
                 } else
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();

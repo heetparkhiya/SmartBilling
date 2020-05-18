@@ -57,6 +57,7 @@ public class AddProductItemsActivity extends AppCompatActivity {
     List<String> Sizes = new LinkedList<>();
     List<String> MRPS = new LinkedList<>();
     List<String> Rates = new LinkedList<>();
+    List<String> Qty = new LinkedList<>();
     String Size = null, MRP = null, Rate = null;
 
     @Override
@@ -138,11 +139,12 @@ public class AddProductItemsActivity extends AppCompatActivity {
         });
     }
 
-    public void insertProductWiseSize(Bean_Product_Item_Size position)
-    {
+    public void insertProductWiseSize(Bean_Product_Item_Size position) {
         Sizes.add(position.getSize());
         MRPS.add(position.getMRP());
         Rates.add(position.getRate());
+        Qty.add(position.getSizeWiseQty());
+
         if(Size == null)
             Size = position.getSize();
         else
@@ -166,11 +168,12 @@ public class AddProductItemsActivity extends AppCompatActivity {
         List<String> itemsMRP = new LinkedList<String>(Arrays.asList(MRP.split(",")));*/
         for(int i= 0;i<Sizes.size();i++)
         {
-            if(Sizes.get(i).equals(bean_product_item_size.getSize()) && Rates.get(i).equals(bean_product_item_size.getRate()) && MRPS.get(i).equals(bean_product_item_size.getMRP()))
+            if(Sizes.get(i).equals(bean_product_item_size.getSize()) && Rates.get(i).equals(bean_product_item_size.getRate()) && MRPS.get(i).equals(bean_product_item_size.getMRP()) && Qty.get(i).equals(bean_product_item_size.getSizeWiseQty()))
             {
                 Sizes.remove(i);
                 Rates.remove(i);
                 MRPS.remove(i);
+                Qty.remove(i);
             }
         }
         Collections.sort(Sizes);
@@ -204,7 +207,8 @@ public class AddProductItemsActivity extends AppCompatActivity {
                 }
                 if (flag == true)
                 {
-                    db_productList.InsertProduct(new Bean_ProductItems(etProductItemsDesignNo.getText().toString(), Size,null,null,null, Rate, MRP));
+                    Log.e("Qty",Qty.toString());
+                    db_productList.InsertProduct(new Bean_ProductItems(etProductItemsDesignNo.getText().toString(), Size,null,Qty.toString(),null, Rate, MRP));
                     Toast.makeText(activity, "Product Added", Toast.LENGTH_SHORT).show();
                     finish();
                 }
