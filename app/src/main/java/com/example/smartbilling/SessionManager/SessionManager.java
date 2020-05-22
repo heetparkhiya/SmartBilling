@@ -31,10 +31,11 @@ public class SessionManager {
         return pref.getString(KEY_PASSWORD,null);
     }
 
-    public void createLoginSession(String password, String username) {
+    public void createLoginSession(String password, String username,int userID) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_PASSWORD, password);
+        editor.putInt(KEY_USERID,userID);
         editor.commit();
     }
 
