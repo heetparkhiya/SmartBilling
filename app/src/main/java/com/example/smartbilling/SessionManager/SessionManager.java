@@ -15,6 +15,7 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_USERNAME = "username";
+    public static final String KEY_USERID = "userID";
 
     public SessionManager(Context context) {
         this.context = context;
@@ -29,6 +30,11 @@ public class SessionManager {
     public String getKeyPassword(Context context)
     {
         return pref.getString(KEY_PASSWORD,null);
+    }
+    
+    public int getUserID(Context context)
+    {
+        return pref.getInt(KEY_USERID,-1);
     }
 
     public void createLoginSession(String password, String username,int userID) {
