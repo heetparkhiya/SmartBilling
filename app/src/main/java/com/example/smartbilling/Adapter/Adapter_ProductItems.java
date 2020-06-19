@@ -42,7 +42,6 @@ public class Adapter_ProductItems extends BaseAdapter {
     class ViewHolder {
         TextView txtDesign;
         TextView txtSize;
-        TextView txtRate;
         TextView txtQuantity;
         TextView txtAmount;
         TextView txtID;
@@ -60,7 +59,6 @@ public class Adapter_ProductItems extends BaseAdapter {
             holder.txtID = (TextView) view.findViewById(R.id.txtID);
             holder.txtDesign = (TextView) view.findViewById(R.id.txtDesign);
             holder.txtSize = (TextView) view.findViewById(R.id.txtSize);
-            holder.txtRate = (TextView) view.findViewById(R.id.txtRate);
             holder.txtQuantity = (TextView) view.findViewById(R.id.txtQuantity);
             holder.txtAmount = (TextView) view.findViewById(R.id.txtAmount);
             view.setTag(holder);
@@ -75,12 +73,6 @@ public class Adapter_ProductItems extends BaseAdapter {
             Size = Size.charAt(0) == ',' ? Size.substring(1, Size.length()) : Size;
             holder.txtSize.setText(Size);
         }
-
-        /*if (Size.charAt(0) == ',') {
-            Size = Size.substring(1, Size.length() - 1);
-        }*/
-        holder.txtRate.setText(arrayItems.get(i).getRateSize() + "");
-        Log.e("QTY",arrayItems.get(i).getQty());
         holder.txtQuantity.setText(arrayItems.get(i).getQty() + "");
         holder.txtAmount.setText(arrayItems.get(i).getAmount() + "");
         return view;

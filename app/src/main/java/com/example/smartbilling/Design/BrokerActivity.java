@@ -21,6 +21,7 @@ import com.example.smartbilling.Adapter.Adapter_Broker;
 import com.example.smartbilling.Bean.Bean_Broker;
 import com.example.smartbilling.Bean.Bean_Response_Broker;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class BrokerActivity extends AppCompatActivity {
     final Activity activity = this;
     SwipeRefreshLayout SwipeRefresh;
     RecyclerView rvBrokerList;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class BrokerActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Broker");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         getAllBroker();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -58,6 +61,7 @@ public class BrokerActivity extends AppCompatActivity {
     }
 
     void getAllBroker() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -65,7 +69,7 @@ public class BrokerActivity extends AppCompatActivity {
         progress.show();
         rvBrokerList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Broker> call = apiInterface.getAllBroker();
+        Call<Bean_Response_Broker> call = apiInterface.getAllBroker(UserID);
         call.enqueue(new Callback<Bean_Response_Broker>() {
             @Override
             public void onResponse(Call<Bean_Response_Broker> call, Response<Bean_Response_Broker> response) {

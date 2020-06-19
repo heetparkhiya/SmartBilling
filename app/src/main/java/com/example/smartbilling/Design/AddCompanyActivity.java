@@ -15,6 +15,7 @@ import com.example.smartbilling.API.ApiClient;
 import com.example.smartbilling.API.ApiInterface;
 import com.example.smartbilling.Bean.Bean_Response_Company;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +27,7 @@ public class AddCompanyActivity extends AppCompatActivity {
     EditText etCompanyName, etCompanyAddress, etCompanyNumber, etCompanyFaxNo, etCompanyEmail, etCompanyVatTinNo, etCompanyCstTinNo;
     String CompanyID, CompanyName, CompanyContactNo, CompanyAddress, CompanyEmail, CompanyVAT_TIN_NO, CompanyCST_TIN_NO, CompanyFaxNO;
     ApiInterface apiInterface;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_company);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         CompanyID = getIntent().getStringExtra("CompanyID");
         CompanyName = getIntent().getStringExtra("CompanyName");
         CompanyContactNo = getIntent().getStringExtra("CompanyContactNo");
@@ -120,7 +123,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         String CompanyFaxNo = etCompanyFaxNo.getText().toString().trim();
         String CompanyVAT_TIN_NO = etCompanyVatTinNo.getText().toString().trim();
         String CompanyCST_TIN_NO = etCompanyCstTinNo.getText().toString().trim();
-        String UserId = "1";
+        String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
 
         final ProgressDialog progress = new ProgressDialog(activity);
@@ -130,7 +133,7 @@ public class AddCompanyActivity extends AppCompatActivity {
         progress.show();
         if (CompanyID == null) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Company> call = apiInterface.InsertCompany(UserId, CompanyName, CompanyAddress, CompanyContactNumber, CompanyFaxNo, CompanyEmail, CompanyVAT_TIN_NO, CompanyCST_TIN_NO, Remarks);
+            Call<Bean_Response_Company> call = apiInterface.InsertCompany(UserID, CompanyName, CompanyAddress, CompanyContactNumber, CompanyFaxNo, CompanyEmail, CompanyVAT_TIN_NO, CompanyCST_TIN_NO, Remarks);
             call.enqueue(new Callback<Bean_Response_Company>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Company> call, Response<Bean_Response_Company> response) {
@@ -152,7 +155,7 @@ public class AddCompanyActivity extends AppCompatActivity {
             });
         } else {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Company> call = apiInterface.UpdateCompany(CompanyID, CompanyName, CompanyAddress, CompanyContactNumber, CompanyFaxNo, CompanyEmail, CompanyVAT_TIN_NO, CompanyCST_TIN_NO, Remarks);
+            Call<Bean_Response_Company> call = apiInterface.UpdateCompany(UserID, CompanyID, CompanyName, CompanyAddress, CompanyContactNumber, CompanyFaxNo, CompanyEmail, CompanyVAT_TIN_NO, CompanyCST_TIN_NO, Remarks);
             call.enqueue(new Callback<Bean_Response_Company>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Company> call, Response<Bean_Response_Company> response) {

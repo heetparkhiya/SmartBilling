@@ -21,6 +21,7 @@ import com.example.smartbilling.Bean.Bean_Response_General;
 import com.example.smartbilling.Design.AddProductActivity;
 import com.example.smartbilling.Design.DetailsProductActivity;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class Adapter_Product extends RecyclerView.Adapter<Adapter_Product.Produc
 
     private List<Bean_Product> ProductList;
     private Activity activity;
+    SessionManager manager;
 
     public Adapter_Product(List<Bean_Product> ProductList, Activity activity) {
         this.ProductList = ProductList;
@@ -104,7 +106,7 @@ public class Adapter_Product extends RecyclerView.Adapter<Adapter_Product.Produc
         progress.setCancelable(false);
         progress.show();
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_General> call = apiInterface.DeleteProduct(ProductID);
+        Call<Bean_Response_General> call = apiInterface.DeleteProduct(manager.getUserID(activity), ProductID);
         call.enqueue(new Callback<Bean_Response_General>() {
             @Override
             public void onResponse(Call<Bean_Response_General> call, Response<Bean_Response_General> response) {
@@ -112,8 +114,7 @@ public class Adapter_Product extends RecyclerView.Adapter<Adapter_Product.Produc
                     notifyItemRemoved(position);
                     Toast.makeText(activity, "Product delete successfully", Toast.LENGTH_SHORT).show();
                     progress.dismiss();
-                }
-                else{
+                } else {
                     Toast.makeText(activity, "Product not delete successfully", Toast.LENGTH_SHORT).show();
                     progress.dismiss();
                 }

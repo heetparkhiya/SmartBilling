@@ -24,6 +24,7 @@ import com.example.smartbilling.Bean.Bean_Party;
 import com.example.smartbilling.Bean.Bean_Response_ListEntry;
 import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -41,6 +42,7 @@ public class AddPackingListActivity extends AppCompatActivity {
     int day, month, year;
     String PartyID = "-1", ListID, PartyAddress, PartyCSTNo, PartyTransportName, ListNo, ListDate, NoofCases, TotalQuantity;
     ApiInterface apiInterface;
+    SessionManager manager;
     boolean flag = false;
 
     @Override
@@ -49,6 +51,7 @@ public class AddPackingListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_packing_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         FillSpinnerParty();
 
         ListID = getIntent().getStringExtra("ListID");
@@ -93,6 +96,7 @@ public class AddPackingListActivity extends AppCompatActivity {
     }
 
     void FillSpinnerParty() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -100,7 +104,7 @@ public class AddPackingListActivity extends AppCompatActivity {
         progress.show();
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Party> call = apiInterface.getAllParty();
+        Call<Bean_Response_Party> call = apiInterface.getAllParty(UserID);
         call.enqueue(new Callback<Bean_Response_Party>() {
             @Override
             public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {
@@ -195,7 +199,7 @@ public class AddPackingListActivity extends AppCompatActivity {
         String PackingDate = etPackingListDate.getText().toString().trim();
         String PackingNoofCases = etPackingListNoOfCases.getText().toString().trim();
         String PackingTotalQuantity = etPackingListTotalQuantity.getText().toString().trim();
-        String UserId = "1";
+        String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
         String ProductID = "4"; //This is Change not final
 
@@ -207,7 +211,7 @@ public class AddPackingListActivity extends AppCompatActivity {
 
         if(ListID == null){
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_ListEntry> call = apiInterface.InsertListEntry("Packing", UserId, PartyID, ProductID, PackingNo, PackingDate, PackingNoofCases, PackingTotalQuantity, Remarks);
+            Call<Bean_Response_ListEntry> call = apiInterface.InsertListEntry("Packing", UserID, PartyID, ProductID, PackingNo, PackingDate, PackingNoofCases, PackingTotalQuantity, Remarks);
             call.enqueue(new Callback<Bean_Response_ListEntry>() {
                 @Override
                 public void onResponse(Call<Bean_Response_ListEntry> call, Response<Bean_Response_ListEntry> response) {
@@ -230,7 +234,7 @@ public class AddPackingListActivity extends AppCompatActivity {
         }
         else{
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_ListEntry> call = apiInterface.UpdateListEntry(ListID, PartyID, ProductID, PackingNo, PackingDate, PackingNoofCases, PackingTotalQuantity, Remarks);
+            Call<Bean_Response_ListEntry> call = apiInterface.UpdateListEntry(UserID, ListID, PartyID, ProductID, PackingNo, PackingDate, PackingNoofCases, PackingTotalQuantity, Remarks);
             call.enqueue(new Callback<Bean_Response_ListEntry>() {
                 @Override
                 public void onResponse(Call<Bean_Response_ListEntry> call, Response<Bean_Response_ListEntry> response) {

@@ -21,6 +21,7 @@ import com.example.smartbilling.Bean.Bean_Response_Collection;
 import com.example.smartbilling.Design.AddCollectionActivity;
 import com.example.smartbilling.Design.DetailsCollectionActivity;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 import retrofit2.Call;
@@ -165,8 +166,9 @@ public class Adapter_Collection extends RecyclerView.Adapter<Adapter_Collection.
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
+        SessionManager manager = new SessionManager(activity);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Collection> call = apiInterface.DeleteCollection(CollectionID);
+        Call<Bean_Response_Collection> call = apiInterface.DeleteCollection(manager.getUserID(activity), CollectionID);
         call.enqueue(new Callback<Bean_Response_Collection>() {
             @Override
             public void onResponse(Call<Bean_Response_Collection> call, Response<Bean_Response_Collection> response) {

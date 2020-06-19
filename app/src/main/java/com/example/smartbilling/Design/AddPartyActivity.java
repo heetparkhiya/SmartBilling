@@ -23,6 +23,8 @@ import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.Bean.Bean_Response_Transport;
 import com.example.smartbilling.Bean.Bean_Transport;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
+
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +36,7 @@ public class AddPartyActivity extends AppCompatActivity {
     EditText etPartyName, etPartyRefName, etPartyAddress, etPartyBankThrough, etPartyPin, etPartyCity, etPartyState, etPartyTelephoneNo, etPartyFaxNo, etPartyMobileNumber, etPartyEmail, etPartyLocation, etPartyCreditDays, etPartyTinNo, etPartyCSTNo, etPartyDISC, etPartyBrokerRage;
     Spinner spPartyTransport, spPartyBroker;
     ApiInterface apiInterface;
+    SessionManager manager;
     String TransportID, BrokerID, PartyID, PartyName, PartyMobileNumber, PartyTelephoneNumber, PartyEmail, PartyAddress, PartyCity, PartyState, PartyPin, PartyLocation, PartyRefName, PartyCSTNumber, PartyTINNumber, PartyBankThrough, PartyCreditDays, PartyDISC, PartyFaxNumber, PartyBrokerID, PartyTransportID, PartyBrokerRage;
 
     @Override
@@ -42,6 +45,7 @@ public class AddPartyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_party);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         FillSpinner();
         PartyID = getIntent().getStringExtra("PartyID");
         PartyName = getIntent().getStringExtra("PartyName");
@@ -92,6 +96,7 @@ public class AddPartyActivity extends AppCompatActivity {
     }
 
     void FillSpinner(){
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -99,7 +104,7 @@ public class AddPartyActivity extends AppCompatActivity {
         progress.show();
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Transport> callTransport = apiInterface.getAllTransport();
+        Call<Bean_Response_Transport> callTransport = apiInterface.getAllTransport(UserID);
         callTransport.enqueue(new Callback<Bean_Response_Transport>() {
             @Override
             public void onResponse(Call<Bean_Response_Transport> call, Response<Bean_Response_Transport> response) {
@@ -131,7 +136,7 @@ public class AddPartyActivity extends AppCompatActivity {
             }
         });
 
-        Call<Bean_Response_Broker> callBroker = apiInterface.getAllBroker();
+        Call<Bean_Response_Broker> callBroker = apiInterface.getAllBroker(UserID);
         callBroker.enqueue(new Callback<Bean_Response_Broker>() {
             @Override
             public void onResponse(Call<Bean_Response_Broker> call, Response<Bean_Response_Broker> response) {
@@ -281,7 +286,7 @@ public class AddPartyActivity extends AppCompatActivity {
         String PartyBroker = BrokerID;
 
         String PartyBrokerRage = etPartyBrokerRage.getText().toString().trim();
-        String UserId = "1";
+        String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
 
         final ProgressDialog progress = new ProgressDialog(activity);
@@ -291,7 +296,7 @@ public class AddPartyActivity extends AppCompatActivity {
         progress.show();
         if (PartyID == null) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Party> call = apiInterface.InsertParty(UserId, PartyTransport, PartyBroker, PartyName, PartyRefName, PartyAddress, PartyBankThrough, PartyPin, PartyCity, PartyState, PartyTelephone, PartyMobile, PartyFaxNo, PartyEmail, PartyLocation, PartyTINNo, PartyCSTNo, PartyCreditDays, PartyDISC, PartyBrokerRage, Remarks);
+            Call<Bean_Response_Party> call = apiInterface.InsertParty(UserID, PartyTransport, PartyBroker, PartyName, PartyRefName, PartyAddress, PartyBankThrough, PartyPin, PartyCity, PartyState, PartyTelephone, PartyMobile, PartyFaxNo, PartyEmail, PartyLocation, PartyTINNo, PartyCSTNo, PartyCreditDays, PartyDISC, PartyBrokerRage, Remarks);
             call.enqueue(new Callback<Bean_Response_Party>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {
@@ -313,7 +318,7 @@ public class AddPartyActivity extends AppCompatActivity {
             });
         } else {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Party> call = apiInterface.UpdateParty(PartyID, PartyTransport, PartyBroker, PartyName, PartyRefName, PartyAddress, PartyBankThrough, PartyPin, PartyCity, PartyState, PartyTelephone, PartyFaxNo, PartyMobile, PartyEmail, PartyLocation, PartyCreditDays, PartyTINNo, PartyCSTNo, PartyDISC, PartyBrokerRage, Remarks);
+            Call<Bean_Response_Party> call = apiInterface.UpdateParty(UserID, PartyID, PartyTransport, PartyBroker, PartyName, PartyRefName, PartyAddress, PartyBankThrough, PartyPin, PartyCity, PartyState, PartyTelephone, PartyFaxNo, PartyMobile, PartyEmail, PartyLocation, PartyCreditDays, PartyTINNo, PartyCSTNo, PartyDISC, PartyBrokerRage, Remarks);
             call.enqueue(new Callback<Bean_Response_Party>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {

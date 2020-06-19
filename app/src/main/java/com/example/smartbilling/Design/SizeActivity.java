@@ -26,6 +26,7 @@ import com.example.smartbilling.Adapter.Adapter_Size;
 import com.example.smartbilling.Bean.Bean_Response_Size;
 import com.example.smartbilling.Bean.Bean_Size;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class SizeActivity extends AppCompatActivity {
     SwipeRefreshLayout SwipeRefresh;
     RecyclerView rvSizeList;
     ApiInterface apiInterface;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class SizeActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Size");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         getAllSize();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -64,6 +67,7 @@ public class SizeActivity extends AppCompatActivity {
     }
 
     void getAllSize() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -71,7 +75,7 @@ public class SizeActivity extends AppCompatActivity {
         progress.show();
         rvSizeList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Size> call = apiInterface.getAllSize();
+        Call<Bean_Response_Size> call = apiInterface.getAllSize(UserID);
         call.enqueue(new Callback<Bean_Response_Size>() {
             @Override
             public void onResponse(Call<Bean_Response_Size> call, Response<Bean_Response_Size> response) {

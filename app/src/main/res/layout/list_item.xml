@@ -15,11 +15,6 @@
         android:text="Size"/>
 
     <TextView
-        android:id="@+id/txtRate"
-        style="@style/TableSubTextViewDesign"
-        android:text="Rate"/>
-
-    <TextView
         android:id="@+id/txtQuantity"
         style="@style/TableSubTextViewDesign"
         android:text="Qty." />

@@ -21,6 +21,7 @@ import com.example.smartbilling.Adapter.Adapter_Transport;
 import com.example.smartbilling.Bean.Bean_Response_Transport;
 import com.example.smartbilling.Bean.Bean_Transport;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class TransportActivity extends AppCompatActivity {
     final Activity activity = this;
     SwipeRefreshLayout SwipeRefresh;
     RecyclerView rvTransportList;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class TransportActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Transport");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         getAllTransport();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -58,6 +61,7 @@ public class TransportActivity extends AppCompatActivity {
     }
 
     void getAllTransport() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -66,7 +70,7 @@ public class TransportActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvTransportList.setLayoutManager(layoutManager);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Transport> call = apiInterface.getAllTransport();
+        Call<Bean_Response_Transport> call = apiInterface.getAllTransport(UserID);
         call.enqueue(new Callback<Bean_Response_Transport>() {
             @Override
             public void onResponse(Call<Bean_Response_Transport> call, Response<Bean_Response_Transport> response) {

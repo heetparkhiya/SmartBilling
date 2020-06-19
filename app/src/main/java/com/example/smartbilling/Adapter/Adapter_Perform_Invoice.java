@@ -22,6 +22,7 @@ import com.example.smartbilling.Bean.Bean_Response_ListEntry;
 import com.example.smartbilling.Design.AddPerformInvoiceActivity;
 import com.example.smartbilling.Design.DetailsPerformInvoiceActivity;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -157,8 +158,9 @@ public class Adapter_Perform_Invoice extends RecyclerView.Adapter<Adapter_Perfor
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
+        SessionManager manager = new SessionManager(activity);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_ListEntry> call = apiInterface.DeleteListEntry(ListID);
+        Call<Bean_Response_ListEntry> call = apiInterface.DeleteListEntry(manager.getUserID(activity), ListID);
         call.enqueue(new Callback<Bean_Response_ListEntry>() {
             @Override
             public void onResponse(Call<Bean_Response_ListEntry> call, Response<Bean_Response_ListEntry> response) {

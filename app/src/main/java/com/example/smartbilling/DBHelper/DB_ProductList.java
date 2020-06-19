@@ -26,7 +26,7 @@ public class DB_ProductList extends SQLiteAssetHelper {
         Log.e("added",add.getSizeWiseQty());
         insertValues.put("SizeWiseQty", add.getSizeWiseQty());
         insertValues.put("Qty", "NULL");
-        insertValues.put("Amount", "NULL");
+        insertValues.put("Amount", add.getAmount());
         insertValues.put("RateSize", add.getRateSize());
         insertValues.put("MRP_Size", add.getMRP_Size());
         db.insert("MST_ProductItems", null, insertValues);

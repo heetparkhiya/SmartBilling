@@ -3,6 +3,7 @@ package com.example.smartbilling.Design;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -46,6 +47,7 @@ import com.example.smartbilling.Bean.Bean_Transport;
 import com.example.smartbilling.DBConstant.DB_CONSTANT;
 import com.example.smartbilling.DBHelper.DB_ProductList;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -87,9 +89,10 @@ public class AddInvoiceActivity extends AppCompatActivity {
     int day, month, year;
     String CompanyName = "", CompanyAddress = "", CompanyMobileNo = "", CompanyEmail = "", PartyName = "", PartyAddress = "", PartyMobileNo = "", TransportName = "", TransportMobileNo = "";
     ListView lvProductList;
-
     ArrayList<Bean_ProductItems> arrayProductItems;
     DB_ProductList db_productList;
+    SessionManager manager;
+    String TotalQty, TotalAmount, GrandTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class AddInvoiceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setElevation(0);
         init();
+        manager = new SessionManager(activity);
         FillSpinner();
 
         CurrentDate = Calendar.getInstance();
@@ -122,13 +126,14 @@ public class AddInvoiceActivity extends AppCompatActivity {
     }
 
     void FillSpinner() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Company> callCompany = apiInterface.getAllCompany();
+        Call<Bean_Response_Company> callCompany = apiInterface.getAllCompany(UserID);
         callCompany.enqueue(new Callback<Bean_Response_Company>() {
             @Override
             public void onResponse(Call<Bean_Response_Company> call, Response<Bean_Response_Company> response) {
@@ -163,7 +168,7 @@ public class AddInvoiceActivity extends AppCompatActivity {
             }
         });
 
-        Call<Bean_Response_Party> callParty = apiInterface.getAllParty();
+        Call<Bean_Response_Party> callParty = apiInterface.getAllParty(UserID);
         callParty.enqueue(new Callback<Bean_Response_Party>() {
             @Override
             public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {
@@ -196,7 +201,7 @@ public class AddInvoiceActivity extends AppCompatActivity {
             }
         });
 
-        Call<Bean_Response_Transport> callTransport = apiInterface.getAllTransport();
+        Call<Bean_Response_Transport> callTransport = apiInterface.getAllTransport(UserID);
         callTransport.enqueue(new Callback<Bean_Response_Transport>() {
             @Override
             public void onResponse(Call<Bean_Response_Transport> call, Response<Bean_Response_Transport> response) {
@@ -280,7 +285,7 @@ public class AddInvoiceActivity extends AppCompatActivity {
         super.onResume();
         db_productList = new DB_ProductList(this);
         arrayProductItems = db_productList.SelectAll();
-        if(arrayProductItems.size() > 0) {
+        if (arrayProductItems.size() > 0) {
             lvProductList.setAdapter(new Adapter_ProductItems(this, arrayProductItems));
         }
         tvAmountTotal.setText(String.valueOf(db_productList.getAmount()));
@@ -558,7 +563,8 @@ public class AddInvoiceActivity extends AppCompatActivity {
         ItemsHeading_Table.addCell(IHT);
 
         ItemsHeading_Table.setHeaderRows(1);
-
+        Double AllProductsTotalQty = 0.00;
+        Double AllProductsTotalAmount = 0.00;
         try {
             SQLiteAssetHelper sql = new SQLiteAssetHelper(this, DB_CONSTANT.DB_NAME, null, DB_CONSTANT.DB_VERSION);
             SQLiteDatabase db = sql.getReadableDatabase();
@@ -586,7 +592,6 @@ public class AddInvoiceActivity extends AppCompatActivity {
                     ItemsHeading_Table.addCell(IHT1);
 
                     IHT1 = new PdfPCell(new Paragraph("Qty & Amt", Font_10_Normal_Black));
-
                     IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
                     IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                     IHT1.setPadding(5);
@@ -594,7 +599,6 @@ public class AddInvoiceActivity extends AppCompatActivity {
 
                     String Size = cur.getString(cur.getColumnIndex("Size"));
                     Size = Size.charAt(0) == ',' ? Size.substring(1, Size.length()) : Size;
-                    //Size = Size.substring(1,Size.length() - 1);
                     String[] allIdsArray = TextUtils.split(Size, ",");
                     ArrayList<String> idsList = new ArrayList<String>(Arrays.asList(allIdsArray));
 
@@ -615,51 +619,45 @@ public class AddInvoiceActivity extends AppCompatActivity {
                     Sizes.add("16");
 
                     String RateSize = (cur.getString(cur.getColumnIndex("RateSize")).trim());
-                    RateSize = RateSize.replaceAll("\\[","").trim();
-                    RateSize = RateSize.replaceAll("]","").trim();
-                    if(RateSize.charAt(0) == ',')
-                    {
-                        RateSize = RateSize.substring(1,RateSize.length() - 1);
+                    RateSize = RateSize.replaceAll("\\[", "").trim();
+                    RateSize = RateSize.replaceAll("]", "").trim();
+                    if (RateSize.charAt(0) == ',') {
+                        RateSize = RateSize.substring(1, RateSize.length() - 1);
                     }
-                    Log.e("RateSize", RateSize);
 
                     String MRP_Size = (cur.getString(cur.getColumnIndex("MRP_Size")).trim());
-                    MRP_Size = MRP_Size.replaceAll("\\[","").trim();
-                    MRP_Size = MRP_Size.replaceAll("]","").trim();
-                    if(MRP_Size.charAt(0) == ',')
-                    {
-                        MRP_Size = MRP_Size.substring(1,MRP_Size.length() - 1);
+                    MRP_Size = MRP_Size.replaceAll("\\[", "").trim();
+                    MRP_Size = MRP_Size.replaceAll("]", "").trim();
+                    if (MRP_Size.charAt(0) == ',') {
+                        MRP_Size = MRP_Size.substring(1, MRP_Size.length() - 1);
                     }
-                    Log.e("MRP_Size", MRP_Size);
 
                     String QTY = (cur.getString(cur.getColumnIndex("SizeWiseQty")));
-                    QTY = QTY.replaceAll("\\[","").trim();
-                    QTY = QTY.replaceAll("]","").trim();
-                    if(QTY.charAt(0) == ',')
-                    {
-                        QTY = QTY.substring(1,QTY.length() - 1);
+                    QTY = QTY.replaceAll("\\[", "").trim();
+                    QTY = QTY.replaceAll("]", "").trim();
+                    if (QTY.charAt(0) == ',') {
+                        QTY = QTY.substring(1, QTY.length() - 1);
                     }
+
                     List<String> SizeWiseQTY = Arrays.asList(QTY.split("\\s*,\\s*"));
                     List<String> Rate = Arrays.asList(RateSize.split("\\s*,\\s*"));
                     List<String> MRP = Arrays.asList(MRP_Size.split("\\s*,\\s*"));
-                    Log.e("QTYPDF", QTY);
 
                     int j = 0;
-                    for(int i=0; i<Sizes.size(); i++)
-                    {
-                        if(j < idsList.size() && Sizes.get(i).trim().equals(idsList.get(j).trim()))
-                        {
-                            Log.e("Sizes", idsList.toString());
-
-                            IHT1 = new PdfPCell(new Paragraph(SizeWiseQTY.get(j) + "," + Rate.get(j) +","+ MRP.get(j), Font_10_Normal_Black));
+                    int TotalQty = 0;
+                    int TotalAmount = 0;
+                    for (int i = 0; i < Sizes.size(); i++) {
+                        if (j < idsList.size() && Sizes.get(i).trim().equals(idsList.get(j).trim())) {
+                            TotalQty = TotalQty + (int) Double.parseDouble(SizeWiseQTY.get(j));
+                            TotalAmount = TotalAmount + (((int) Double.parseDouble(SizeWiseQTY.get(j))) * ((int) Double.parseDouble(Rate.get(j))));
+                            IHT1 = new PdfPCell(new Paragraph(SizeWiseQTY.get(j) + "," + Rate.get(j) + "," + MRP.get(j), Font_10_Normal_Black));
                             IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
                             IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
                             IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                             IHT1.setPadding(5);
                             ItemsHeading_Table.addCell(IHT1);
                             j++;
-                        }else
-                        {
+                        } else {
                             IHT1 = new PdfPCell(new Paragraph("-", Font_10_Normal_Black));
                             IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
                             IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -668,21 +666,23 @@ public class AddInvoiceActivity extends AppCompatActivity {
                         }
                     }
 
-
-                    // Total QTY.
                     String Qty = (cur.getString(cur.getColumnIndex("Qty")));
-                    IHT1 = new PdfPCell(new Paragraph(Qty, Font_10_Normal_Black));
+                    IHT1 = new PdfPCell(new Paragraph(String.valueOf(TotalQty), Font_10_Normal_Black));
                     IHT1.setHorizontalAlignment(Element.ALIGN_LEFT);
                     IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                     IHT1.setPadding(5);
                     ItemsHeading_Table.addCell(IHT1);
 
+                    AllProductsTotalQty = AllProductsTotalQty + TotalQty;
+
                     String Amount = (cur.getString(cur.getColumnIndex("Amount")));
-                    IHT1 = new PdfPCell(new Paragraph(Amount, Font_10_Normal_Black));
+                    IHT1 = new PdfPCell(new Paragraph(String.valueOf(TotalAmount), Font_10_Normal_Black));
                     IHT1.setHorizontalAlignment(Element.ALIGN_CENTER);
                     IHT1.setVerticalAlignment(Element.ALIGN_MIDDLE);
                     IHT1.setPadding(5);
                     ItemsHeading_Table.addCell(IHT1);
+
+                    AllProductsTotalAmount = AllProductsTotalAmount + TotalAmount;
                 } while (cur.moveToNext());
             }
             db.close();
@@ -697,13 +697,13 @@ public class AddInvoiceActivity extends AppCompatActivity {
         IHT2.setPadding(5);
         ItemsHeading_Table.addCell(IHT2);
 
-        IHT2 = new PdfPCell(new Paragraph(tvQuantityTotal.getText().toString(), Font_10_Bold_Black));
+        IHT2 = new PdfPCell(new Paragraph(String.valueOf(AllProductsTotalQty), Font_10_Bold_Black));
         IHT2.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT2.setVerticalAlignment(Element.ALIGN_MIDDLE);
         IHT2.setPadding(5);
         ItemsHeading_Table.addCell(IHT2);
 
-        IHT2 = new PdfPCell(new Paragraph(tvAmountTotal.getText().toString(), Font_10_Bold_Black));
+        IHT2 = new PdfPCell(new Paragraph(String.valueOf(AllProductsTotalAmount), Font_10_Bold_Black));
         IHT2.setHorizontalAlignment(Element.ALIGN_RIGHT);
         IHT2.setVerticalAlignment(Element.ALIGN_MIDDLE);
         IHT2.setPadding(5);

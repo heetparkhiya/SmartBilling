@@ -25,6 +25,7 @@ import com.example.smartbilling.Bean.Bean_Party;
 import com.example.smartbilling.Bean.Bean_Response_CreditNote;
 import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -43,6 +44,7 @@ public class AddCreditNoteActivity extends AppCompatActivity {
     boolean flag = false;
     Calendar CurrentDate;
     int day, month, year;
+    SessionManager manager;
     String PartyID = "-1", CreditNoteID, CreditNoteNo, CreditNoteDate, CreditNoteNoOfCases, CreditNoteInvoiceNo, CreditNoteInvoiceDate, CreditNoteTotalQuantity, CreditNoteTotalAmount, CreditNoteDiscountPR, CreditNoteDiscount, CreditNoteTotal, CreditNoteTaxPR, CreditNoteTax, CreditNoteOtherCharges, CreditNoteGrandTotal, CreditNoteCForm;
 
     @Override
@@ -52,6 +54,7 @@ public class AddCreditNoteActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         FillSpinnerParty();
 
         CreditNoteID = getIntent().getStringExtra("CreditNoteID");
@@ -134,13 +137,14 @@ public class AddCreditNoteActivity extends AppCompatActivity {
     }
 
     void FillSpinnerParty() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Party> call = apiInterface.getAllParty();
+        Call<Bean_Response_Party> call = apiInterface.getAllParty(UserID);
         call.enqueue(new Callback<Bean_Response_Party>() {
             @Override
             public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {
@@ -299,7 +303,7 @@ public class AddCreditNoteActivity extends AppCompatActivity {
         else
             cbCForm.setChecked(false);
 
-        String UserID = "1";
+        String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
 
         final ProgressDialog progress = new ProgressDialog(activity);
@@ -332,7 +336,7 @@ public class AddCreditNoteActivity extends AppCompatActivity {
         }
         else{
            apiInterface = ApiClient.getClient().create(ApiInterface.class);
-           Call<Bean_Response_CreditNote> call = apiInterface.UpdateCreditNote(CreditNoteID, PartyID, CreditNoteNo, CreditDate, NoofCases, InvoiceNo, InvoiceDate, TotalQuantity, TotalAmount, DiscountPR, Discount, Total, TaxPR, Tax, OtherCharges, GrandTotal, CForm, Remarks);
+           Call<Bean_Response_CreditNote> call = apiInterface.UpdateCreditNote(UserID, CreditNoteID, PartyID, CreditNoteNo, CreditDate, NoofCases, InvoiceNo, InvoiceDate, TotalQuantity, TotalAmount, DiscountPR, Discount, Total, TaxPR, Tax, OtherCharges, GrandTotal, CForm, Remarks);
            call.enqueue(new Callback<Bean_Response_CreditNote>() {
                @Override
                public void onResponse(Call<Bean_Response_CreditNote> call, Response<Bean_Response_CreditNote> response) {

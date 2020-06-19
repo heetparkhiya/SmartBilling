@@ -24,6 +24,7 @@ import com.example.smartbilling.Bean.Bean_Party;
 import com.example.smartbilling.Bean.Bean_Response_Collection;
 import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -41,6 +42,7 @@ public class AddCollectionActivity extends AppCompatActivity {
     int day, month, year;
     String PartyID = "-1";
     ApiInterface apiInterface;
+    SessionManager manager;
     boolean flag = false;
     String CollectionID, SP_PartyID, PartyName, BillNo, BillDate, Days, BankName, BankBranch, CollectionNo, CollectionDate, ModeOfPayment, ChequeNo, ChequeDate, BillAmount, CreditNote, DiscountPR, Discount, ReceivedAmount, CollectionAmount, ClearanceDate;
 
@@ -50,6 +52,7 @@ public class AddCollectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_collection);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         FillSpinnerParty();
         CollectionID = getIntent().getStringExtra("CollectionID");
         SP_PartyID = getIntent().getStringExtra("PartyID");
@@ -166,13 +169,14 @@ public class AddCollectionActivity extends AppCompatActivity {
     }
 
     void FillSpinnerParty() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Party> call = apiInterface.getAllParty();
+        Call<Bean_Response_Party> call = apiInterface.getAllParty(UserID);
         call.enqueue(new Callback<Bean_Response_Party>() {
             @Override
             public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {
@@ -314,7 +318,7 @@ public class AddCollectionActivity extends AppCompatActivity {
         String ClearanceDate = etCollectionClearanceDate.getText().toString().trim();
 
         String CreditNote = "1"; //Check and Verify and How to use it from the database PENDING
-        String UserID = "1";
+        String UserID = manager.getUserID(activity);
         String BrokerID = "1"; //Check it need or not PENDING
         String Remarks = "NULL";
 
@@ -348,7 +352,7 @@ public class AddCollectionActivity extends AppCompatActivity {
         }
         else{
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Collection> call = apiInterface.UpdateCollection(CollectionID, PartyID, BrokerID, CreditNote, BillNo, BillDate, Days, BankName, BankBranch, CollectionNo, CollectionDate, PaymentMode, ChequeNo, ChequeDate, CollectionDate, BillAmount, DiscountPR, Discount, ReceivedAmount, CollectionAmount, ClearanceDate, Remarks);
+            Call<Bean_Response_Collection> call = apiInterface.UpdateCollection(UserID, CollectionID, PartyID, BrokerID, CreditNote, BillNo, BillDate, Days, BankName, BankBranch, CollectionNo, CollectionDate, PaymentMode, ChequeNo, ChequeDate, CollectionDate, BillAmount, DiscountPR, Discount, ReceivedAmount, CollectionAmount, ClearanceDate, Remarks);
             call.enqueue(new Callback<Bean_Response_Collection>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Collection> call, Response<Bean_Response_Collection> response) {

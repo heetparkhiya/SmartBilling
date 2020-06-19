@@ -29,7 +29,7 @@ public interface ApiInterface {
     Call<Bean_Response_User> LoginUser(@Query("Username") String UserName, @Query("Password") String UserPassword);
 
     @GET("Transport/SelectAll.php")
-    Call<Bean_Response_Transport> getAllTransport();
+    Call<Bean_Response_Transport> getAllTransport(@Query("UserID") String UserID);
 
     @FormUrlEncoded
     @POST("Transport/Insert.php")
@@ -43,6 +43,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Transport/Update.php")
     Call<Bean_Response_Transport> UpdateTransport(
+            @Field("UserID") String UserID,
             @Field("TransportID") String TransportID,
             @Field("TransportName") String TransportName,
             @Field("TransportAddress") String TransportAddress,
@@ -50,10 +51,10 @@ public interface ApiInterface {
             @Field("Remarks") String Remarks);
 
     @DELETE("Transport/Delete.php")
-    Call<Bean_Response_Transport> DeleteTransport(@Query("TransportID") String TransportID);
+    Call<Bean_Response_Transport> DeleteTransport(@Query("UserID") String UserID, @Query("TransportID") String TransportID);
 
     @GET("Size/SelectAll.php")
-    Call<Bean_Response_Size> getAllSize();
+    Call<Bean_Response_Size> getAllSize(@Query("UserID") String UserID);
 
     @FormUrlEncoded
     @POST("Size/Insert.php")
@@ -65,15 +66,16 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Size/Update.php")
     Call<Bean_Response_Size> UpdateSize(
+            @Field("UserID") String UserID,
             @Field("SizeID") String SizeID,
             @Field("Size") String Size,
             @Field("Remarks") String Remarks);
 
     @DELETE("Size/Delete.php")
-    Call<Bean_Response_Size> DeleteSize(@Query("SizeID") String SizeID);
+    Call<Bean_Response_Size> DeleteSize(@Query("UserID") String UserID, @Query("SizeID") String SizeID);
 
     @GET("Company/SelectAll.php")
-    Call<Bean_Response_Company> getAllCompany();
+    Call<Bean_Response_Company> getAllCompany(@Query("UserID") String UserID);
 
     @FormUrlEncoded
     @POST("Company/Insert.php")
@@ -91,6 +93,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Company/Update.php")
     Call<Bean_Response_Company> UpdateCompany(
+            @Field("UserID") String UserID,
             @Field("CompanyID") String CompanyID,
             @Field("CompanyName") String CompanyName,
             @Field("CompanyAddress") String CompanyAddress,
@@ -102,10 +105,10 @@ public interface ApiInterface {
             @Field("Remarks") String Remarks);
 
     @DELETE("Company/Delete.php")
-    Call<Bean_Response_Company> DeleteCompany(@Query("CompanyID") String CompanyID);
+    Call<Bean_Response_Company> DeleteCompany(@Query("UserID") String UserID, @Query("CompanyID") String CompanyID);
 
     @GET("Broker/SelectAll.php")
-    Call<Bean_Response_Broker> getAllBroker();
+    Call<Bean_Response_Broker> getAllBroker(@Query("UserID") String UserID);
 
     @FormUrlEncoded
     @POST("Broker/Insert.php")
@@ -123,6 +126,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Broker/Update.php")
     Call<Bean_Response_Broker> UpdateBroker(
+            @Field("UserID") String UserID,
             @Field("BrokerID") String BrokerID,
             @Field("BrokerName") String BrokerName,
             @Field("BrokerAddress") String BrokerAddress,
@@ -134,10 +138,10 @@ public interface ApiInterface {
             @Field("Remarks") String Remarks);
 
     @DELETE("Broker/Delete.php")
-    Call<Bean_Response_Broker> DeleteBroker(@Query("BrokerID") String BrokerID);
+    Call<Bean_Response_Broker> DeleteBroker(@Query("UserID") String UserID, @Query("BrokerID") String BrokerID);
 
     @GET("Party/SelectAll.php")
-    Call<Bean_Response_Party> getAllParty();
+    Call<Bean_Response_Party> getAllParty(@Query("UserID") String UserID);
 
     @FormUrlEncoded
     @POST("Party/Insert.php")
@@ -168,6 +172,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Party/Update.php")
     Call<Bean_Response_Party> UpdateParty(
+            @Field("UserID") String UserI,
             @Field("PartyID") String PartyID,
             @Field("TransportID") String TransportID,
             @Field("BrokerID") String BrokerID,
@@ -192,13 +197,13 @@ public interface ApiInterface {
     );
 
     @DELETE("Party/Delete.php")
-    Call<Bean_Response_Party> DeleteParty(@Query("PartyID") String PartyID);
+    Call<Bean_Response_Party> DeleteParty(@Query("UserID") String UserID, @Query("PartyID") String PartyID);
 
     @GET("List/SelectAll.php")
-    Call<Bean_Response_ListEntry> getAllListEntry(@Query("ListType") String ListType);
+    Call<Bean_Response_ListEntry> getAllListEntry(@Query("UserID") String UserID, @Query("ListType") String ListType);
 
     @DELETE("List/Delete.php")
-    Call<Bean_Response_ListEntry> DeleteListEntry(@Query("ListID") String ListID);
+    Call<Bean_Response_ListEntry> DeleteListEntry(@Query("UserID") String UserID, @Query("ListID") String ListID);
 
     @FormUrlEncoded
     @POST("List/Insert.php")
@@ -216,6 +221,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("List/Update.php")
     Call<Bean_Response_ListEntry> UpdateListEntry(
+            @Field("UserID") String UserID,
             @Field("ListID") String ListID,
             @Field("PartyID") String PartyID,
             @Field("ProductID") String ProductID,
@@ -226,11 +232,11 @@ public interface ApiInterface {
             @Field("Remarks") String Remarks);
 
     @DELETE("Product/Delete.php")
-    Call<Bean_Response_General> DeleteProduct(@Query("ProductID") String productID);
+    Call<Bean_Response_General> DeleteProduct(@Query("UserID") String UserID,@Query("ProductID") String productID);
 
     @FormUrlEncoded
     @POST("Product/Insert.php")
-    Call<Bean_Response_Product_Multi> InsertProduct(@Field("UserID") int UserID,
+    Call<Bean_Response_Product_Multi> InsertProduct(@Field("UserID") String UserID,
                                                     @Field("ProductDesignNumber") String ProductDesignNumber,
                                                     @Field("ProductName") String ProductName,
                                                     @Field("ProductMRP_PR") String ProductMRP_PR,
@@ -238,11 +244,12 @@ public interface ApiInterface {
                                                     @Field("Remarks") String Remarks);
 
     @GET("Product/SelectAll.php")
-    Call<Bean_Response_Product> getAllProduct();
+    Call<Bean_Response_Product> getAllProduct(@Query("UserID") String UserID);
 
     @FormUrlEncoded
     @POST("Product/Update.php")
     Call<Bean_Response_General> UpdateProduct(
+            @Field("UserID") String UserID,
             @Field("ProductID") String ProductID,
             @Field("ProductDesignNumber") String ProductDesignNumber,
             @Field("ProductName") String ProductName,
@@ -256,10 +263,10 @@ public interface ApiInterface {
     Call<Bean_Response_General> InsertProductWiseSize(@Field("Product") String Product);
 
     @GET("CreditNote/SelectAll.php")
-    Call<Bean_Response_CreditNote> getAllCreditNote();
+    Call<Bean_Response_CreditNote> getAllCreditNote(@Query("UserID") String UserID);
 
     @DELETE("CreditNote/Delete.php")
-    Call<Bean_Response_CreditNote> DeleteCreditNote(@Query("CreditNoteID") String CreditNoteID);
+    Call<Bean_Response_CreditNote> DeleteCreditNote(@Query("UserID") String UserID, @Query("CreditNoteID") String CreditNoteID);
 
     @FormUrlEncoded
     @POST("CreditNote/Insert.php")
@@ -286,6 +293,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("CreditNote/Update.php")
     Call<Bean_Response_CreditNote> UpdateCreditNote(
+            @Field("UserID") String UserID,
             @Field("CreditNoteID") String CreditNoteID,
             @Field("PartyID") String PartyID,
             @Field("CreditNoteNo") String CreditNoteNo,
@@ -306,10 +314,10 @@ public interface ApiInterface {
             @Field("Remarks") String Remarks);
 
     @GET("Collection/SelectAll.php")
-    Call<Bean_Response_Collection> getAllCollection();
+    Call<Bean_Response_Collection> getAllCollection(@Query("UserID") String UserID);
 
     @DELETE("Collection/Delete.php")
-    Call<Bean_Response_Collection> DeleteCollection(@Query("CollectionID") String CollectionID);
+    Call<Bean_Response_Collection> DeleteCollection(@Query("UserID") String UserID, @Query("CollectionID") String CollectionID);
 
     @FormUrlEncoded
     @POST("Collection/Insert.php")
@@ -340,6 +348,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("Collection/Update.php")
     Call<Bean_Response_Collection> UpdateCollection(
+            @Field("UserID") String UserID,
             @Field("CollectionID") String CollectionID,
             @Field("PartyID") String PartyID,
             @Field("BrokerID") String BrokerID,

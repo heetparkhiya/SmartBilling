@@ -16,6 +16,7 @@ import com.example.smartbilling.API.ApiClient;
 import com.example.smartbilling.API.ApiInterface;
 import com.example.smartbilling.Bean.Bean_Response_Broker;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +26,7 @@ public class AddBrokerActivity extends AppCompatActivity {
     final Activity activity = this;
     EditText etBrokerName, etBrokerAddress, etBrokerTelephoneNo, etBrokerFaxNo, etBrokerMobileNumber, etBrokerEmail, etBrokerRate;
     ApiInterface apiInterface;
+    SessionManager manager;
     String BrokerID, BrokerName, BrokerAddress, BrokerTelephoneNumber, BrokerFaxNo, BrokerMobileNumber, BrokerEmail, BrokerRate;
 
     @Override
@@ -33,6 +35,7 @@ public class AddBrokerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_broker);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         BrokerID = getIntent().getStringExtra("BrokerID");
         BrokerName = getIntent().getStringExtra("BrokerName");
         BrokerAddress = getIntent().getStringExtra("BrokerAddress");
@@ -134,12 +137,12 @@ public class AddBrokerActivity extends AppCompatActivity {
         String MobileNumber = etBrokerMobileNumber.getText().toString();
         String Email = etBrokerEmail.getText().toString();
         String Rate = etBrokerRate.getText().toString();
-        String UserId = "1";
+        String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
 
         if(BrokerID == null) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Broker> call = apiInterface.InsertBroker(UserId, Name, Address, TelephoneNumber, FaxNumber, MobileNumber, Email, Rate, Remarks);
+            Call<Bean_Response_Broker> call = apiInterface.InsertBroker(UserID, Name, Address, TelephoneNumber, FaxNumber, MobileNumber, Email, Rate, Remarks);
             call.enqueue(new Callback<Bean_Response_Broker>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Broker> call, Response<Bean_Response_Broker> response) {
@@ -163,7 +166,7 @@ public class AddBrokerActivity extends AppCompatActivity {
 
         else{
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Broker> call = apiInterface.UpdateBroker(BrokerID, Name, Address, TelephoneNumber, FaxNumber, MobileNumber, Email, Rate, Remarks);
+            Call<Bean_Response_Broker> call = apiInterface.UpdateBroker(UserID, BrokerID, Name, Address, TelephoneNumber, FaxNumber, MobileNumber, Email, Rate, Remarks);
             call.enqueue(new Callback<Bean_Response_Broker>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Broker> call, Response<Bean_Response_Broker> response) {

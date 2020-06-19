@@ -21,6 +21,7 @@ import com.example.smartbilling.Adapter.Adapter_Party;
 import com.example.smartbilling.Bean.Bean_Party;
 import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class PartyActivity extends AppCompatActivity {
     SwipeRefreshLayout SwipeRefresh;
     RecyclerView rvPartyList;
     ApiInterface apiInterface;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class PartyActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Party");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         getAllParty();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -59,6 +62,7 @@ public class PartyActivity extends AppCompatActivity {
     }
 
     void getAllParty(){
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -66,7 +70,7 @@ public class PartyActivity extends AppCompatActivity {
         progress.show();
         rvPartyList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Party> call = apiInterface.getAllParty();
+        Call<Bean_Response_Party> call = apiInterface.getAllParty(UserID);
         call.enqueue(new Callback<Bean_Response_Party>() {
             @Override
             public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {

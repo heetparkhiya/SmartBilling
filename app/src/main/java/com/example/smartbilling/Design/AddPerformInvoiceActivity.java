@@ -24,6 +24,7 @@ import com.example.smartbilling.Bean.Bean_Party;
 import com.example.smartbilling.Bean.Bean_Response_ListEntry;
 import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -39,6 +40,7 @@ public class AddPerformInvoiceActivity extends AppCompatActivity {
     Spinner spPerInvPartyName;
     Calendar CurrentDate;
     int day, month, year;
+    SessionManager manager;
     String PartyID = "-1", ListID, PartyAddress, PartyCSTNo, PartyTransportName, ListNo, ListDate, NoofCases, TotalQuantity;
     ApiInterface apiInterface;
     boolean flag = false;
@@ -50,8 +52,8 @@ public class AddPerformInvoiceActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Perform Invoice");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         FillSpinnerParty();
-
         CurrentDate = Calendar.getInstance();
         day = CurrentDate.get(Calendar.DAY_OF_MONTH);
         month = CurrentDate.get(Calendar.MONTH);
@@ -94,6 +96,7 @@ public class AddPerformInvoiceActivity extends AppCompatActivity {
     }
 
     void FillSpinnerParty() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -101,7 +104,7 @@ public class AddPerformInvoiceActivity extends AppCompatActivity {
         progress.show();
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Party> call = apiInterface.getAllParty();
+        Call<Bean_Response_Party> call = apiInterface.getAllParty(UserID);
         call.enqueue(new Callback<Bean_Response_Party>() {
             @Override
             public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {
@@ -195,7 +198,7 @@ public class AddPerformInvoiceActivity extends AppCompatActivity {
         String PerInvDate = etPerInvDate.getText().toString().trim();
         String PerInvNoofCases = etPerInvNoOfCases.getText().toString().trim();
         String PerInvTotalQuantity = etPerInvQuantity.getText().toString().trim();
-        String UserId = "1";
+        String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
         String ProductID = "4"; //This is Change not final
 
@@ -207,7 +210,7 @@ public class AddPerformInvoiceActivity extends AppCompatActivity {
 
         if (ListID == null) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_ListEntry> call = apiInterface.InsertListEntry("Invoice", UserId, PartyID, ProductID, PerInvNo, PerInvDate, PerInvNoofCases, PerInvTotalQuantity, Remarks);
+            Call<Bean_Response_ListEntry> call = apiInterface.InsertListEntry("Invoice", UserID, PartyID, ProductID, PerInvNo, PerInvDate, PerInvNoofCases, PerInvTotalQuantity, Remarks);
             call.enqueue(new Callback<Bean_Response_ListEntry>() {
                 @Override
                 public void onResponse(Call<Bean_Response_ListEntry> call, Response<Bean_Response_ListEntry> response) {
@@ -229,7 +232,7 @@ public class AddPerformInvoiceActivity extends AppCompatActivity {
             });
         } else {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_ListEntry> call = apiInterface.UpdateListEntry(ListID, PartyID, ProductID, PerInvNo, PerInvDate, PerInvNoofCases, PerInvTotalQuantity, Remarks);
+            Call<Bean_Response_ListEntry> call = apiInterface.UpdateListEntry(UserID, ListID, PartyID, ProductID, PerInvNo, PerInvDate, PerInvNoofCases, PerInvTotalQuantity, Remarks);
             call.enqueue(new Callback<Bean_Response_ListEntry>() {
                 @Override
                 public void onResponse(Call<Bean_Response_ListEntry> call, Response<Bean_Response_ListEntry> response) {

@@ -22,6 +22,7 @@ import com.example.smartbilling.Adapter.Adapter_Collection;
 import com.example.smartbilling.Bean.Bean_Collection;
 import com.example.smartbilling.Bean.Bean_Response_Collection;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class CollectionActivity extends AppCompatActivity {
     SwipeRefreshLayout SwipeRefresh;
     RecyclerView rvCollectionList;
     ApiInterface apiInterface;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class CollectionActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Collection");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         getAllCollection();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -60,6 +63,7 @@ public class CollectionActivity extends AppCompatActivity {
     }
 
     void getAllCollection() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -67,7 +71,7 @@ public class CollectionActivity extends AppCompatActivity {
         progress.show();
         rvCollectionList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Collection> call = apiInterface.getAllCollection();
+        Call<Bean_Response_Collection> call = apiInterface.getAllCollection(UserID);
         call.enqueue(new Callback<Bean_Response_Collection>() {
             @Override
             public void onResponse(Call<Bean_Response_Collection> call, Response<Bean_Response_Collection> response) {

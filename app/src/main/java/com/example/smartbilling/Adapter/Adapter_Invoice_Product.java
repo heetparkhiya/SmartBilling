@@ -34,7 +34,6 @@ public class Adapter_Invoice_Product extends RecyclerView.Adapter<RecyclerView.V
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof VHItem) {
@@ -51,7 +50,6 @@ public class Adapter_Invoice_Product extends RecyclerView.Adapter<RecyclerView.V
         return TYPE_ITEM;
     }
 
-
     @Override
     public int getItemCount() {
         return listItems.size() + 1;
@@ -63,15 +61,13 @@ public class Adapter_Invoice_Product extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-
     static class VHItem extends RecyclerView.ViewHolder {
-        TextView txtDesign, txtSize, txtRate, txtQuantity, txtAmount;
+        TextView txtDesign, txtSize, txtQuantity, txtAmount;
 
         public VHItem(View itemView) {
             super(itemView);
             this.txtDesign = (TextView) itemView.findViewById(R.id.txtDesign);
             this.txtSize = (TextView) itemView.findViewById(R.id.txtSize);
-            this.txtRate = (TextView) itemView.findViewById(R.id.txtRate);
             this.txtQuantity = (TextView) itemView.findViewById(R.id.txtQuantity);
             this.txtAmount = (TextView) itemView.findViewById(R.id.txtAmount);
         }

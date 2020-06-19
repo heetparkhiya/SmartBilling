@@ -22,6 +22,7 @@ import com.example.smartbilling.Bean.Bean_Response_Company;
 import com.example.smartbilling.Design.AddCompanyActivity;
 import com.example.smartbilling.Design.DetailsCompanyActivity;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -151,8 +152,9 @@ public class Adapter_Company extends RecyclerView.Adapter<Adapter_Company.Compan
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
+        SessionManager manager = new SessionManager(activity);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Company> call = apiInterface.DeleteCompany(CompanyID);
+        Call<Bean_Response_Company> call = apiInterface.DeleteCompany(manager.getUserID(activity), CompanyID);
         call.enqueue(new Callback<Bean_Response_Company>() {
             @Override
             public void onResponse(Call<Bean_Response_Company> call, Response<Bean_Response_Company> response) {

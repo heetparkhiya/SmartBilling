@@ -21,6 +21,7 @@ import com.example.smartbilling.Bean.Bean_Response_CreditNote;
 import com.example.smartbilling.Design.AddCreditNoteActivity;
 import com.example.smartbilling.Design.DetailsCreditNoteActivity;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -173,8 +174,9 @@ public class Adapter_CreditNote extends RecyclerView.Adapter<Adapter_CreditNote.
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
+        SessionManager manager = new SessionManager(activity);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_CreditNote> call = apiInterface.DeleteCreditNote(CreditNoteID);
+        Call<Bean_Response_CreditNote> call = apiInterface.DeleteCreditNote(manager.getUserID(activity), CreditNoteID);
         call.enqueue(new Callback<Bean_Response_CreditNote>() {
             @Override
             public void onResponse(Call<Bean_Response_CreditNote> call, Response<Bean_Response_CreditNote> response) {

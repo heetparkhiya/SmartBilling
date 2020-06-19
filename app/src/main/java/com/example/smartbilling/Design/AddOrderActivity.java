@@ -24,6 +24,7 @@ import com.example.smartbilling.Bean.Bean_Party;
 import com.example.smartbilling.Bean.Bean_Response_ListEntry;
 import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -42,6 +43,7 @@ public class AddOrderActivity extends AppCompatActivity {
     String PartyID = "-1", ListID, PartyAddress, PartyCSTNo, PartyTransportName, ListNo, ListDate, NoofCases, TotalQuantity;
     ApiInterface apiInterface;
     boolean flag = false;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class AddOrderActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Add Order");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         FillSpinnerParty();
         ListID = getIntent().getStringExtra("ListID");
         PartyAddress = getIntent().getStringExtra("PartyAddress");
@@ -93,6 +96,7 @@ public class AddOrderActivity extends AppCompatActivity {
     }
 
     void FillSpinnerParty() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -100,7 +104,7 @@ public class AddOrderActivity extends AppCompatActivity {
         progress.show();
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Party> call = apiInterface.getAllParty();
+        Call<Bean_Response_Party> call = apiInterface.getAllParty(UserID);
         call.enqueue(new Callback<Bean_Response_Party>() {
             @Override
             public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {
@@ -138,7 +142,6 @@ public class AddOrderActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -196,7 +199,7 @@ public class AddOrderActivity extends AppCompatActivity {
         String OrderDate = etOrderDate.getText().toString().trim();
         String OrderNoofCases = etOrderNoOfCases.getText().toString().trim();
         String OrderTotalQuantity = etTotalQuantity.getText().toString().trim();
-        String UserId = "1";
+        String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
         String ProductID = "4"; //This is Change not final
 
@@ -208,7 +211,7 @@ public class AddOrderActivity extends AppCompatActivity {
 
         if(ListID == null){
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_ListEntry> call = apiInterface.InsertListEntry("Order", UserId, PartyID, ProductID, OrderNo, OrderDate, OrderNoofCases, OrderTotalQuantity,Remarks);
+            Call<Bean_Response_ListEntry> call = apiInterface.InsertListEntry("Order", UserID, PartyID, ProductID, OrderNo, OrderDate, OrderNoofCases, OrderTotalQuantity,Remarks);
             call.enqueue(new Callback<Bean_Response_ListEntry>() {
                 @Override
                 public void onResponse(Call<Bean_Response_ListEntry> call, Response<Bean_Response_ListEntry> response) {
@@ -232,7 +235,7 @@ public class AddOrderActivity extends AppCompatActivity {
         else
         {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_ListEntry> call = apiInterface.UpdateListEntry(ListID, PartyID, ProductID, OrderNo, OrderDate, OrderNoofCases, OrderTotalQuantity, Remarks);
+            Call<Bean_Response_ListEntry> call = apiInterface.UpdateListEntry(UserID, ListID, PartyID, ProductID, OrderNo, OrderDate, OrderNoofCases, OrderTotalQuantity, Remarks);
             call.enqueue(new Callback<Bean_Response_ListEntry>() {
                 @Override
                 public void onResponse(Call<Bean_Response_ListEntry> call, Response<Bean_Response_ListEntry> response) {

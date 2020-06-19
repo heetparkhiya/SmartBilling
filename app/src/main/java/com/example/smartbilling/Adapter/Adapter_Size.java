@@ -18,6 +18,7 @@ import com.example.smartbilling.API.ApiInterface;
 import com.example.smartbilling.Bean.Bean_Response_Size;
 import com.example.smartbilling.Bean.Bean_Size;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -92,8 +93,9 @@ public class Adapter_Size extends RecyclerView.Adapter<Adapter_Size.SizeViewHold
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
+        SessionManager manager = new SessionManager(activity);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Size> call = apiInterface.DeleteSize(SizeID);
+        Call<Bean_Response_Size> call = apiInterface.DeleteSize(manager.getUserID(activity), SizeID);
         call.enqueue(new Callback<Bean_Response_Size>() {
             @Override
             public void onResponse(Call<Bean_Response_Size> call, Response<Bean_Response_Size> response) {

@@ -149,10 +149,6 @@
 
                 <TextView
                     style="@style/TableTextViewDesign"
-                    android:text="Rate" />
-
-                <TextView
-                    style="@style/TableTextViewDesign"
                     android:text="Qty." />
 
                 <TextView

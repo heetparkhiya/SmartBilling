@@ -22,6 +22,7 @@ import com.example.smartbilling.Bean.Bean_Response_Broker;
 import com.example.smartbilling.Design.AddBrokerActivity;
 import com.example.smartbilling.Design.DetailsBrokerActivity;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -152,8 +153,9 @@ public class Adapter_Broker extends RecyclerView.Adapter<Adapter_Broker.BrokerVi
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
+        SessionManager manager = new SessionManager(activity);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Broker> call = apiInterface.DeleteBroker(BrokerID);
+        Call<Bean_Response_Broker> call = apiInterface.DeleteBroker(manager.getUserID(activity), BrokerID);
         call.enqueue(new Callback<Bean_Response_Broker>() {
             @Override
             public void onResponse(Call<Bean_Response_Broker> call, Response<Bean_Response_Broker> response) {

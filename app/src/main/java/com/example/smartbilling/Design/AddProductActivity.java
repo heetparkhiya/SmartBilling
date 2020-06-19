@@ -26,6 +26,7 @@ import com.example.smartbilling.Bean.Bean_Response_Product_Multi;
 import com.example.smartbilling.Bean.Bean_Response_Size;
 import com.example.smartbilling.Bean.Bean_Size;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,6 +45,7 @@ public class AddProductActivity extends AppCompatActivity {
     Activity activity = AddProductActivity.this;
     ApiInterface apiInterface;
     Adapter_ProductWise_Size adapter;
+    SessionManager manager;
     TextInputEditText etProductDesignNo, etProductName, etProductStyle, etProductMRP_PR;
     String ProductID = null, ProductName = null, ProductDesignNumber = null, ProductStyle = null, ProductMRP_PR = null;
     private List<Bean_Size> SizeList = new ArrayList<>();
@@ -54,6 +56,7 @@ public class AddProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_product);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         ProductID = getIntent().getStringExtra("ProductID");
         ProductName = getIntent().getStringExtra("ProductName");
         ProductDesignNumber = getIntent().getStringExtra("ProductDesignNumber");
@@ -115,6 +118,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     void getAllSize() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -125,7 +129,7 @@ public class AddProductActivity extends AppCompatActivity {
         rvProductWiseSize.setLayoutManager(layoutManager);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Size> call = apiInterface.getAllSize();
+        Call<Bean_Response_Size> call = apiInterface.getAllSize(UserID);
         call.enqueue(new Callback<Bean_Response_Size>() {
             @Override
             public void onResponse(Call<Bean_Response_Size> call, Response<Bean_Response_Size> response) {
@@ -185,7 +189,7 @@ public class AddProductActivity extends AppCompatActivity {
         String ProductName = etProductName.getText().toString().trim();
         String ProductStyle = etProductStyle.getText().toString().trim();
         String ProductMRP_PR = etProductMRP_PR.getText().toString().trim();
-        int UserID = 1;
+        String UserID = manager.getUserID(activity);
         String Remarks = "No Remarks";
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
@@ -244,8 +248,7 @@ public class AddProductActivity extends AppCompatActivity {
 
             Clear();
 
-        }
-        else {
+        } else {
             List<Bean_Size> sizeList = new ArrayList<>(SizeList);
             for (int i = 0; i < SizeList.size(); i++) {
                 View view = rvProductWiseSize.getChildAt(i);
@@ -265,7 +268,7 @@ public class AddProductActivity extends AppCompatActivity {
             String sizeListString = new Gson().toJson(sizeList, new TypeToken<List<Bean_Size>>() {
             }.getType());
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_General> call = apiInterface.UpdateProduct(ProductID, ProductDesignNumber, ProductName, ProductMRP_PR, ProductStyle, Remarks, sizeListString);
+            Call<Bean_Response_General> call = apiInterface.UpdateProduct(manager.getUserID(getApplicationContext()), ProductID, ProductDesignNumber, ProductName, ProductMRP_PR, ProductStyle, Remarks, sizeListString);
             call.enqueue(new Callback<Bean_Response_General>() {
                 @Override
                 public void onResponse(Call<Bean_Response_General> call, Response<Bean_Response_General> response) {

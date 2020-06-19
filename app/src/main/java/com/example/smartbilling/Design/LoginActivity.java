@@ -55,7 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                         public void onResponse(Call<Bean_Response_User> call, Response<Bean_Response_User> response) {
                             dialog.dismiss();
                             if (response.body().getResponse() == 1) {
-                                session.createLoginSession(username, password);
+                                String UserID = response.body().getData().get(0).getUserID();
+                                session.createLoginSession(username, password, UserID);
                                 startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
                                 finish();
                             }

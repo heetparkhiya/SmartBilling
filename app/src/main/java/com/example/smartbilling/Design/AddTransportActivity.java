@@ -16,6 +16,7 @@ import com.example.smartbilling.API.ApiClient;
 import com.example.smartbilling.API.ApiInterface;
 import com.example.smartbilling.Bean.Bean_Response_Transport;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +28,7 @@ public class AddTransportActivity extends AppCompatActivity {
     EditText etTransportName, etTransportAddress, etTransportMobileNo;
     String TransportID = "", TransportName = "", TransportMobileNumber = "", TransportAddress = "";
     ApiInterface apiInterface;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class AddTransportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_transport);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         TransportID = getIntent().getStringExtra("TransportID");
         TransportName = getIntent().getStringExtra("TransportName");
         TransportMobileNumber = getIntent().getStringExtra("TransportMobileNumber");
@@ -92,7 +95,7 @@ public class AddTransportActivity extends AppCompatActivity {
         String TransportName = etTransportName.getText().toString().trim();
         String TransportAddress = etTransportAddress.getText().toString().trim();
         String TransportMobileNo = etTransportMobileNo.getText().toString().trim();
-        String UserId = "1";
+        String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
 
         final ProgressDialog progress = new ProgressDialog(activity);
@@ -103,7 +106,7 @@ public class AddTransportActivity extends AppCompatActivity {
 
         if (TransportID == null) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Transport> call = apiInterface.InsertTransport(UserId, TransportName, TransportAddress, TransportMobileNo, Remarks);
+            Call<Bean_Response_Transport> call = apiInterface.InsertTransport(UserID, TransportName, TransportAddress, TransportMobileNo, Remarks);
             call.enqueue(new Callback<Bean_Response_Transport>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Transport> call, Response<Bean_Response_Transport> response) {
@@ -125,7 +128,7 @@ public class AddTransportActivity extends AppCompatActivity {
             });
         } else {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<Bean_Response_Transport> call = apiInterface.UpdateTransport(TransportID, TransportName, TransportAddress, TransportMobileNo, Remarks);
+            Call<Bean_Response_Transport> call = apiInterface.UpdateTransport(UserID, TransportID, TransportName, TransportAddress, TransportMobileNo, Remarks);
             call.enqueue(new Callback<Bean_Response_Transport>() {
                 @Override
                 public void onResponse(Call<Bean_Response_Transport> call, Response<Bean_Response_Transport> response) {

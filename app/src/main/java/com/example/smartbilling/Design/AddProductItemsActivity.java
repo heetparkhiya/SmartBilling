@@ -29,9 +29,9 @@ import com.example.smartbilling.Bean.Bean_Response_Product;
 import com.example.smartbilling.Bean.Bean_Response_Product_Item_Size;
 import com.example.smartbilling.DBHelper.DB_ProductList;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,18 +53,20 @@ public class AddProductItemsActivity extends AppCompatActivity {
     Boolean flag = true;
     Bean_ProductItems bean_productItems;
     DB_ProductList db_productList;
-
+    SessionManager manager;
     List<String> Sizes = new LinkedList<>();
     List<String> MRPS = new LinkedList<>();
     List<String> Rates = new LinkedList<>();
     List<String> Qty = new LinkedList<>();
     String Size = null, MRP = null, Rate = null;
+    Double Amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product_items);
         init();
+        manager = new SessionManager(activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
@@ -72,7 +74,7 @@ public class AddProductItemsActivity extends AppCompatActivity {
         progress.setCancelable(false);
         progress.show();
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Product> call = apiInterface.getAllProduct();
+        Call<Bean_Response_Product> call = apiInterface.getAllProduct(manager.getUserID(getApplicationContext()));
         call.enqueue(new Callback<Bean_Response_Product>() {
             @Override
             public void onResponse(Call<Bean_Response_Product> call, Response<Bean_Response_Product> response) {
@@ -145,31 +147,26 @@ public class AddProductItemsActivity extends AppCompatActivity {
         Rates.add(position.getRate());
         Qty.add(position.getSizeWiseQty());
 
-        if(Size == null)
+        if (Size == null)
             Size = position.getSize();
         else
             Size = Size + "," + position.getSize();
 
-        if(Rate == null)
+        if (Rate == null)
             Rate = position.getRate();
         else
             Rate = Rate + "," + position.getRate();
 
-        if(MRP == null)
+        if (MRP == null)
             MRP = position.getMRP();
         else
             MRP = MRP + "," + position.getMRP();
     }
 
 
-    public void deleteProductWiseSize(Bean_Product_Item_Size bean_product_item_size){
-        /*List<String> items = new LinkedList<String>(Arrays.asList(Size.split(",")));
-        List<String> itemsRate = new LinkedList<String>(Arrays.asList(Rate.split(",")));
-        List<String> itemsMRP = new LinkedList<String>(Arrays.asList(MRP.split(",")));*/
-        for(int i= 0;i<Sizes.size();i++)
-        {
-            if(Sizes.get(i).equals(bean_product_item_size.getSize()) && Rates.get(i).equals(bean_product_item_size.getRate()) && MRPS.get(i).equals(bean_product_item_size.getMRP()) && Qty.get(i).equals(bean_product_item_size.getSizeWiseQty()))
-            {
+    public void deleteProductWiseSize(Bean_Product_Item_Size bean_product_item_size) {
+        for (int i = 0; i < Sizes.size(); i++) {
+            if (Sizes.get(i).equals(bean_product_item_size.getSize()) && Rates.get(i).equals(bean_product_item_size.getRate()) && MRPS.get(i).equals(bean_product_item_size.getMRP()) && Qty.get(i).equals(bean_product_item_size.getSizeWiseQty())) {
                 Sizes.remove(i);
                 Rates.remove(i);
                 MRPS.remove(i);
@@ -180,7 +177,6 @@ public class AddProductItemsActivity extends AppCompatActivity {
         Collections.sort(Rates);
         Collections.sort(MRPS);
         Size = Sizes.toString();
-        Log.e("Sizzzz",Sizes.toString());
         Rate = Rates.toString();
         MRP = MRPS.toString();
     }
@@ -205,10 +201,8 @@ public class AddProductItemsActivity extends AppCompatActivity {
                 } else {
                     bean_productItems.setDesignNo(etProductItemsDesignNo.getText().toString());
                 }
-                if (flag == true)
-                {
-                    Log.e("Qty",Qty.toString());
-                    db_productList.InsertProduct(new Bean_ProductItems(etProductItemsDesignNo.getText().toString(), Size,null,Qty.toString(),null, Rate, MRP));
+                if (flag == true) {
+                    db_productList.InsertProduct(new Bean_ProductItems(etProductItemsDesignNo.getText().toString(), Size, null, Qty.toString(), String.valueOf(Amount), Rate, MRP));
                     Toast.makeText(activity, "Product Added", Toast.LENGTH_SHORT).show();
                     finish();
                 }

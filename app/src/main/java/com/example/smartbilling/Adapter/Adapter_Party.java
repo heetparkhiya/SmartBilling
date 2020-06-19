@@ -22,6 +22,7 @@ import com.example.smartbilling.Bean.Bean_Response_Party;
 import com.example.smartbilling.Design.AddPartyActivity;
 import com.example.smartbilling.Design.DetailsPartyActivity;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -183,8 +184,9 @@ public class Adapter_Party extends RecyclerView.Adapter<Adapter_Party.PartyViewH
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
+        SessionManager manager = new SessionManager(activity);
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Party> call = apiInterface.DeleteParty(PartyID);
+        Call<Bean_Response_Party> call = apiInterface.DeleteParty(manager.getUserID(activity), PartyID);
         call.enqueue(new Callback<Bean_Response_Party>() {
             @Override
             public void onResponse(Call<Bean_Response_Party> call, Response<Bean_Response_Party> response) {

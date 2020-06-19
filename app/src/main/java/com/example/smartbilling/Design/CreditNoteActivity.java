@@ -22,6 +22,7 @@ import com.example.smartbilling.Adapter.Adapter_CreditNote;
 import com.example.smartbilling.Bean.Bean_CreditNote;
 import com.example.smartbilling.Bean.Bean_Response_CreditNote;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class CreditNoteActivity extends AppCompatActivity {
     SwipeRefreshLayout SwipeRefresh;
     RecyclerView rvCreditNoteList;
     ApiInterface apiInterface;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class CreditNoteActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Credit Note");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         getAllCreditNote();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -60,6 +63,7 @@ public class CreditNoteActivity extends AppCompatActivity {
     }
 
     void getAllCreditNote() {
+        String UserID = manager.getUserID(activity);
         final ProgressDialog progress = new ProgressDialog(activity);
         progress.setTitle("Loading");
         progress.setMessage("Wait while loading...");
@@ -67,7 +71,7 @@ public class CreditNoteActivity extends AppCompatActivity {
         progress.show();
         rvCreditNoteList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_CreditNote> call = apiInterface.getAllCreditNote();
+        Call<Bean_Response_CreditNote> call = apiInterface.getAllCreditNote(UserID);
         call.enqueue(new Callback<Bean_Response_CreditNote>() {
             @Override
             public void onResponse(Call<Bean_Response_CreditNote> call, Response<Bean_Response_CreditNote> response) {

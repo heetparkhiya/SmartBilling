@@ -23,6 +23,7 @@ import com.example.smartbilling.Adapter.Adapter_Product;
 import com.example.smartbilling.Bean.Bean_Product;
 import com.example.smartbilling.Bean.Bean_Response_Product;
 import com.example.smartbilling.R;
+import com.example.smartbilling.SessionManager.SessionManager;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class ProductActivity extends AppCompatActivity {
     final Activity activity = this;
     SwipeRefreshLayout SwipeRefresh;
     RecyclerView rvProductList;
+    SessionManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class ProductActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Product");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        manager = new SessionManager(activity);
         getAllProduct();
         SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -68,7 +71,7 @@ public class ProductActivity extends AppCompatActivity {
         progress.show();
         rvProductList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Bean_Response_Product> call = apiInterface.getAllProduct();
+        Call<Bean_Response_Product> call = apiInterface.getAllProduct(manager.getUserID(getApplicationContext()));
         call.enqueue(new Callback<Bean_Response_Product>() {
             @Override
             public void onResponse(Call<Bean_Response_Product> call, Response<Bean_Response_Product> response) {
@@ -82,7 +85,7 @@ public class ProductActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Bean_Response_Product> call, Throwable t) {
-                Log.e("Error",t.getMessage());
+                Log.e("Error", t.getMessage());
                 Toast.makeText(activity, "Internet connection problem", Toast.LENGTH_SHORT).show();
                 progress.dismiss();
             }
