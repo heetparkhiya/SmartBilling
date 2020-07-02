@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "http://192.168.31.78/SmartBillingAPI/";
+    public static final String BASE_URL = "https://venereal-insulation.000webhostapp.com/SmartBillingAPI/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
