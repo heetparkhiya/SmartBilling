@@ -48,7 +48,7 @@ public class Adapter_Product extends RecyclerView.Adapter<Adapter_Product.Produc
 
     @Override
     public void onBindViewHolder(final ProductViewHolder holder, final int position) {
-
+        manager = new SessionManager(activity);
         holder.tvProductName.setText(ProductList.get(position).getProductName());
         holder.tvDesignNumber.setText(ProductList.get(position).getProductDesignNumber());
         holder.tvProductStyle.setText(ProductList.get(position).getProductStyle());
@@ -111,6 +111,7 @@ public class Adapter_Product extends RecyclerView.Adapter<Adapter_Product.Produc
             @Override
             public void onResponse(Call<Bean_Response_General> call, Response<Bean_Response_General> response) {
                 if (response.body().getResponse() == 1) {
+                    notifyDataSetChanged();
                     notifyItemRemoved(position);
                     Toast.makeText(activity, "Product delete successfully", Toast.LENGTH_SHORT).show();
                     progress.dismiss();

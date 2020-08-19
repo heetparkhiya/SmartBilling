@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "https://venereal-insulation.000webhostapp.com/SmartBillingAPI/";
+    public static final String BASE_URL = "http://smartbilling.scalablelabs.com/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
@@ -16,7 +16,7 @@ public class ApiClient {
                 .setLenient()
                 .create();
 
-        if (retrofit==null) {
+        if (retrofit == null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson))

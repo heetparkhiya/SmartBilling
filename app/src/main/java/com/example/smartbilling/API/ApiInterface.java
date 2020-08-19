@@ -25,7 +25,7 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
 
-    @GET("User/Login.php")
+    @GET("User/login.php")
     Call<Bean_Response_User> LoginUser(@Query("Username") String UserName, @Query("Password") String UserPassword);
 
     @GET("Transport/SelectAll.php")

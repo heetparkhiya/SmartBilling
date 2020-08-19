@@ -1,7 +1,5 @@
 package com.example.smartbilling.Design;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -17,6 +15,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbilling.API.ApiClient;
 import com.example.smartbilling.API.ApiInterface;
@@ -298,10 +298,10 @@ public class AddCreditNoteActivity extends AppCompatActivity {
         String OtherCharges = etCNOtherCharge.getText().toString().trim();
         String GrandTotal = etCNGrandTotal.getText().toString().trim();
         String CForm = "";
-        if(CreditNoteCForm.equals("Yes"))
+        /*if(CreditNoteCForm.equals("Yes"))
             cbCForm.setChecked(true);
         else
-            cbCForm.setChecked(false);
+            cbCForm.setChecked(false);*/
 
         String UserID = manager.getUserID(activity);
         String Remarks = "NULL";
