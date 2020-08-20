@@ -39,26 +39,8 @@ public class Adapter_CreditNote extends RecyclerView.Adapter<Adapter_CreditNote.
         this.activity = activity;
     }
 
-    public static class CreditNoteViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvCreditNoteID;
-        TextView tvPartyName;
-        TextView tvCreditNoteNo;
-        TextView tvCreditDate;
-        TextView tvGrandTotal;
-        ImageView imgEdit;
-        ImageView imgDelete;
-
-        public CreditNoteViewHolder(View v) {
-            super(v);
-            tvCreditNoteID = (TextView) v.findViewById(R.id.tvCreditNoteID);
-            tvPartyName = (TextView) v.findViewById(R.id.tvPartyName);
-            tvCreditNoteNo = (TextView) v.findViewById(R.id.tvCreditNoteNo);
-            tvCreditDate = (TextView) v.findViewById(R.id.tvCreditDate);
-            tvGrandTotal = (TextView) v.findViewById(R.id.tvGrandTotal);
-            imgEdit = (ImageView) v.findViewById(R.id.imgEdit);
-            imgDelete = (ImageView) v.findViewById(R.id.imgDelete);
-        }
+    public void setCreditNoteList(List<Bean_CreditNote> creditNoteList) {
+        CreditNoteList = creditNoteList;
     }
 
     @Override
@@ -166,6 +148,28 @@ public class Adapter_CreditNote extends RecyclerView.Adapter<Adapter_CreditNote.
     @Override
     public int getItemCount() {
         return CreditNoteList.size();
+    }
+
+    public static class CreditNoteViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvCreditNoteID;
+        TextView tvPartyName;
+        TextView tvCreditNoteNo;
+        TextView tvCreditDate;
+        TextView tvGrandTotal;
+        ImageView imgEdit;
+        ImageView imgDelete;
+
+        public CreditNoteViewHolder(View v) {
+            super(v);
+            tvCreditNoteID = v.findViewById(R.id.tvCreditNoteID);
+            tvPartyName = v.findViewById(R.id.tvPartyName);
+            tvCreditNoteNo = v.findViewById(R.id.tvCreditNoteNo);
+            tvCreditDate = v.findViewById(R.id.tvCreditDate);
+            tvGrandTotal = v.findViewById(R.id.tvGrandTotal);
+            imgEdit = v.findViewById(R.id.imgEdit);
+            imgDelete = v.findViewById(R.id.imgDelete);
+        }
     }
 
     void Delete(String CreditNoteID) {

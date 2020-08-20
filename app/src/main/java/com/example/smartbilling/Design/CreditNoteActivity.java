@@ -1,13 +1,7 @@
 package com.example.smartbilling.Design;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.smartbilling.API.ApiClient;
 import com.example.smartbilling.API.ApiInterface;
 import com.example.smartbilling.Adapter.Adapter_CreditNote;
@@ -23,7 +21,9 @@ import com.example.smartbilling.Bean.Bean_CreditNote;
 import com.example.smartbilling.Bean.Bean_Response_CreditNote;
 import com.example.smartbilling.R;
 import com.example.smartbilling.SessionManager.SessionManager;
+import com.example.smartbilling.databinding.ActivityCreditNoteBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,29 +33,31 @@ import retrofit2.Response;
 public class CreditNoteActivity extends AppCompatActivity {
 
     final Activity activity = this;
-    SwipeRefreshLayout SwipeRefresh;
-    RecyclerView rvCreditNoteList;
+    ActivityCreditNoteBinding binding;
     ApiInterface apiInterface;
     SessionManager manager;
+    List<Bean_CreditNote> CreditNoteList = new ArrayList<>();
+    Adapter_CreditNote adapterCreditNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_credit_note);
+        binding = ActivityCreditNoteBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         getSupportActionBar().setTitle("Credit Note");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
         manager = new SessionManager(activity);
         getAllCreditNote();
-        SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-        SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        binding.SwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+        binding.SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getAllCreditNote();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        SwipeRefresh.setRefreshing(false);
+                        binding.SwipeRefresh.setRefreshing(false);
                     }
                 }, 2000);
             }
@@ -69,18 +71,18 @@ public class CreditNoteActivity extends AppCompatActivity {
         progress.setMessage("Wait while loading...");
         progress.setCancelable(false);
         progress.show();
-        rvCreditNoteList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        binding.rvCreditNoteList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<Bean_Response_CreditNote> call = apiInterface.getAllCreditNote(UserID);
         call.enqueue(new Callback<Bean_Response_CreditNote>() {
             @Override
             public void onResponse(Call<Bean_Response_CreditNote> call, Response<Bean_Response_CreditNote> response) {
                 if (response.body().getResponse() == 1) {
-                    List<Bean_CreditNote> CreditNoteList = response.body().getData();
-                    rvCreditNoteList.setAdapter(new Adapter_CreditNote(CreditNoteList, activity));
+                    CreditNoteList = response.body().getData();
+                    adapterCreditNote.setCreditNoteList(CreditNoteList);
+                    adapterCreditNote.notifyDataSetChanged();
                     progress.dismiss();
-                }
-                else
+                } else
                     Toast.makeText(activity, "Data Not Found", Toast.LENGTH_SHORT).show();
             }
 
@@ -115,8 +117,8 @@ public class CreditNoteActivity extends AppCompatActivity {
         return true;
     }
 
-    void init(){
-        SwipeRefresh = (SwipeRefreshLayout) findViewById (R.id.SwipeRefresh);
-        rvCreditNoteList = (RecyclerView) findViewById (R.id.rvCreditNoteList);
+    void init() {
+        adapterCreditNote = new Adapter_CreditNote(CreditNoteList, activity);
+        binding.rvCreditNoteList.setAdapter(adapterCreditNote);
     }
 }
